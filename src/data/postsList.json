@@ -1,0 +1,71 @@
+[{
+		"id": 1,
+		"title": "article 1",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1044/400",
+		"likes": 14,
+		"comments": 4,
+		"pinned": false,
+		"liked": true
+	},
+	{
+		"id": 2,
+		"title": "article 2",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1045/400",
+		"likes": 5,
+		"comments": 3,
+		"pinned": true,
+		"liked": false
+	},
+	{
+		"id": 3,
+		"title": "article 3",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1051/400",
+		"likes": 7,
+		"comments": 2,
+		"pinned": false,
+		"liked": false
+	},
+	{
+		"id": 4,
+		"title": "article 4",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1047/400",
+		"likes": 14,
+		"comments": 4,
+		"pinned": true,
+		"liked": true
+	},
+	{
+		"id": 5,
+		"title": "article 5",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1048/400",
+		"likes": 5,
+		"comments": 3,
+		"pinned": false,
+		"liked": false
+	},
+	{
+		"id": 6,
+		"title": "article 6",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1049/400",
+		"likes": 7,
+		"comments": 2,
+		"pinned": false,
+		"liked": false
+	},
+	{
+		"id": 7,
+		"title": "article 7",
+		"summary": "some desription about the article",
+		"imgURL": "https://picsum.photos/id/1050/400",
+		"likes": 14,
+		"comments": 4,
+		"pinned": false,
+		"liked": false
+	}
+]

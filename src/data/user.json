@@ -1,0 +1,10 @@
+{
+  "ID": 1,
+  "role": "user",
+  "firstName": "Joe",
+  "lastName": "Bloggs",
+  "username": "theusername",
+  "about": "I am a test user of this system.",
+  "email": "joebloggs@example.com",
+  "avatarURL": "https://www.gravatar.com/avatar/?d=robohash"
+}
