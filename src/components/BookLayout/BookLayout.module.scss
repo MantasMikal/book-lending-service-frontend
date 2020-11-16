@@ -1,0 +1,22 @@
+@import '../../assets/scss/utils.scss';
+
+
+.Thumbnail {
+  height: 0;
+  overflow: hidden;
+  padding-top: 56%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 16px;
+}
+
+.TitleWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Title {
+  flex: 1 1 70%;
+  margin-right: 16px;
+}
