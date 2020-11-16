@@ -1,0 +1,11 @@
+.SearchWrapper {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.BooksWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1em;
+  margin-bottom: 16px;
+}

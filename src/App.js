@@ -16,6 +16,7 @@ import Post from './components/post';
 
 import UserContext from './contexts/user';
 import BookLayout from './components/BookLayout';
+import UserBooksLayout from './components/UserBooksLayout';
 
 const { Content, Footer } = Layout;
 
@@ -25,7 +26,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {loggedIn: false}
+      user: {loggedIn: false, ID: null}
     }
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -49,6 +50,8 @@ class App extends React.Component {
       logout: this.logout
     };
 
+    console.log('USER: ', this.state.user)
+
     return (
       <UserContext.Provider value={context}>
         <Router>
@@ -59,7 +62,9 @@ class App extends React.Component {
               <Route path="/register" children={<Register />} />
               <Route path="/login" children={<Login />} />
               <Route path="/book/:id" children={<BookLayout />} />
+              <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/" children={<Home />} exact />
+              
             </Switch>
           </Content>
 
