@@ -1,38 +1,41 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import bookPlaceholder from "../../assets/images/book_placeholder.jpg";
-import { status, json } from "../../utilities/requestHandlers";
 import { useParams } from "react-router-dom";
+import { message, Typography } from "antd";
 
-import styles from "./BookLayout.module.scss";
-import Title from "antd/lib/typography/Title";
-import Paragraph from "antd/lib/typography/Paragraph";
 import Container from "../Container";
 import Badge from "../Badge";
+import imageUrlBuilder from "../../utilities/image-builder";
+import { fetchBookById } from "../../utilities/fetch-helpers";
+import Spinner from "../Spinner";
 
-const BookLayout = ({ match }) => {
+import styles from "./BookLayout.module.scss";
+
+const { Title, Paragraph } = Typography;
+
+const BookLayout = () => {
   const [book, setBook] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(match);
-    fetch(`http://localhost:3030/api/v1/books/${id}`)
-      .then(status)
-      .then(json)
-      .then((bookData) => {
-        setBook(bookData);
-      })
-      .catch((err) => {
-        console.log(`Fetch error for post ${id}`);
-      });
+    const fetchData = async () => {
+      setIsLoading(true);
+      const data = await fetchBookById(id);
+      !data && message.error("Error fetching books")
+      setBook(data);
+      setIsLoading(false)
+    };
+
+    fetchData();
   }, []);
 
+
   const { imageURL, title, summary, yearPublished } = book;
-  const image = imageURL || bookPlaceholder;
+  const image = imageUrlBuilder(imageURL);
 
   return (
-    <Container gutter center size="wide">
-      {book ? (
+    <Container gutter center size="wide" fullHeight>
+      {!isLoading ? (
         <div className={styles.BookLayout}>
           <div
             className={styles.Thumbnail}
@@ -40,20 +43,22 @@ const BookLayout = ({ match }) => {
           />
           <div className={styles.BookDetails}>
             <div className={styles.TitleWrapper}>
-            <Title className={styles.Title} level={2}>{title}</Title>
-            <Badge status="On Loan" />
+              <Title className={styles.Title} level={2}>
+                {title}
+              </Title>
+              <Badge status="On Loan" />
             </div>
-            <Title className={styles.YearPublished} level={4}>{yearPublished}</Title>
+            <Title className={styles.YearPublished} level={4}>
+              {yearPublished}
+            </Title>
             <Paragraph className={styles.Summary}>{summary}</Paragraph>
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Spinner />
       )}
     </Container>
   );
 };
-
-BookLayout.propTypes = {};
 
 export default BookLayout;

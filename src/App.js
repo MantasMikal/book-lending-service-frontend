@@ -17,6 +17,7 @@ import Post from './components/post';
 import UserContext from './contexts/user';
 import BookLayout from './components/BookLayout';
 import UserBooksLayout from './components/UserBooksLayout';
+import EditBookLayout from './components/EditBookLayout';
 
 const { Content, Footer } = Layout;
 
@@ -26,16 +27,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {loggedIn: false, ID: null}
+      user: {loggedIn: false}
     }
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
 
-  login(user) {
+  login(user, token) {
     console.log("User is now being set on the context");
     user.loggedIn = true;
-    this.setState({user:user});
+    this.setState({user: {...user, token: token}});
   }
 
   logout() {
@@ -63,8 +64,9 @@ class App extends React.Component {
               <Route path="/login" children={<Login />} />
               <Route path="/book/:id" children={<BookLayout />} />
               <Route path="/my-books" children={<UserBooksLayout />} />
+              <Route path="/add-book" children={<EditBookLayout />} />
+              <Route path="/edit-book/:bookId" children={<EditBookLayout editView/>} />
               <Route path="/" children={<Home />} exact />
-              
             </Switch>
           </Content>
 
