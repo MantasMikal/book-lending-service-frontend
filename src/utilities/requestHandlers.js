@@ -2,7 +2,7 @@
  * Check the HTTP status code and resolve or reject accordingly
  * @param {object} response - the Response() object to process
  */
-export function status(response) {
+export const status = (response) => {
     if (response.status >= 200 && response.status < 300) {
       return response;
     } else {
@@ -16,6 +16,6 @@ export function status(response) {
  * Extract the response body for further processing
  * @param {object} response - the Response() object to process
  */
-export function json(response) {
+export const json = (response) => {
   return response.json();
 }
