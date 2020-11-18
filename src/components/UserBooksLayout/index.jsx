@@ -18,6 +18,7 @@ const UserBooksLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [books, setBooks] = useState([]);
   const { user } = useContext(UserContext);
+  console.log("UserBooksLayout -> user", user)
   const { ID, token } = user;
   const history = useHistory();
 
