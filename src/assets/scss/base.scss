@@ -1,8 +1,14 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
+// Antd global overrides
+
+.ant-form-item {
+  margin-bottom: 16px;
+}
 
 // Force fill whole screen height
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -14,5 +20,5 @@ html, body {
 
 main {
   flex: 1 1;
-  height: 100%;
+  height: 100%; 
 }

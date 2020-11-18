@@ -9,17 +9,16 @@ import './assets/scss/base.scss';
 
 import Header from './components/Header'
 import Account from './components/account';
-import Register from './components/register';
-import Login from './components/login';
 import Home from './components/HomeLayout';
 
 import UserContext from './contexts/user';
 import BookLayout from './components/BookLayout';
 import UserBooksLayout from './components/UserBooksLayout';
 import EditBookLayout from './components/EditBookLayout';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 
 const { Content, Footer } = Layout;
-
 
 class App extends React.Component {
 
@@ -34,15 +33,14 @@ class App extends React.Component {
   }
 
   login(user, token) {
-    console.log("User is now being set on the context");
+    localStorage.removeItem('user') // Remove any previous user data
     user.loggedIn = true;
     const userData = {...user, token: token}
     localStorage.setItem('user', JSON.stringify(userData))
-    this.setState(userData);
+    this.setState({user: userData});
   }
 
   logout() {
-    console.log("Removing user from the app context");
     localStorage.removeItem('user')
     this.setState({user: {loggedIn:false}});
   }
@@ -63,8 +61,8 @@ class App extends React.Component {
           <Content>
             <Switch>
               <Route path="/account" children={<Account />} />
-              <Route path="/register" children={<Register />} />
-              <Route path="/login" children={<Login />} />
+              <Route path="/register" children={<RegistrationForm />} />
+              <Route path="/login" children={<LoginForm />} />
               <Route path="/book/:id" children={<BookLayout />} />
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
