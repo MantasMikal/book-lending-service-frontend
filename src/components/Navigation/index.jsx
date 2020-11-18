@@ -20,12 +20,15 @@ const Navigation = () => {
           <Link to="/my-books">My Books</Link>
         </Menu.Item>
         <Menu.Item key="4">
-          <Link to="/register">Register</Link>
+          <Link to="/add-book">Add book</Link>
         </Menu.Item>
         <Menu.Item key="5">
+          <Link to="/register">Register</Link>
+        </Menu.Item>
+        <Menu.Item key="6">
           <Link to="/login">Login</Link>
         </Menu.Item>
-        <Menu.Item key="6" onClick={logout}>
+        <Menu.Item key="7" onClick={logout}>
           <Link to="/">Logout</Link>
         </Menu.Item>
       </Menu>

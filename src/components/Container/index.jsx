@@ -10,13 +10,14 @@ export const sizes = ["small", "medium", "large", "wide"];
  * Optionally center-aligned, with preset \`size\` values available. Can
  * also provide gutter spacing.
  */
-const Container = ({ center, children, className, gutter, size }) => (
+const Container = ({ center, children, className, gutter, fullHeight, size }) => (
   <div
     className={classNames(
       styles.Container,
       center && styles.center,
       gutter && styles.gutter,
       size && styles[size],
+      fullHeight && styles.fullHeight,
       className
     )}
   >
@@ -29,6 +30,7 @@ Container.propTypes = {
   children: node.isRequired,
   className: string,
   gutter: bool,
+  fullHeight: bool,
   size: oneOf(sizes),
 };
 
