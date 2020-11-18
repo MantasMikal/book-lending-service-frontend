@@ -12,7 +12,6 @@ import Account from './components/account';
 import Register from './components/register';
 import Login from './components/login';
 import Home from './components/HomeLayout';
-import Post from './components/post';
 
 import UserContext from './contexts/user';
 import BookLayout from './components/BookLayout';
@@ -27,8 +26,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {loggedIn: false}
+      user: JSON.parse(localStorage.getItem('user')) || {loggedIn: false}
     }
+
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
@@ -36,11 +36,14 @@ class App extends React.Component {
   login(user, token) {
     console.log("User is now being set on the context");
     user.loggedIn = true;
-    this.setState({user: {...user, token: token}});
+    const userData = {...user, token: token}
+    localStorage.setItem('user', JSON.stringify(userData))
+    this.setState(userData);
   }
 
   logout() {
     console.log("Removing user from the app context");
+    localStorage.removeItem('user')
     this.setState({user: {loggedIn:false}});
   }
 
