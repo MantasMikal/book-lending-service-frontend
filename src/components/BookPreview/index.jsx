@@ -2,14 +2,14 @@ import React from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { Card } from "antd";
-import imageUrlBuilder from "../../utilities/image-builder";
+import {imageUrlBuilderMany} from "../../utilities/image-builder";
 
 import styles from "./BookPreview.module.scss";
 
 const { Meta } = Card;
 
 const BookPreview = ({
-  imageURL,
+  images,
   title,
   yearPublished,
   ID,
@@ -17,7 +17,9 @@ const BookPreview = ({
   onDelete,
   onUpdate,
 }) => {
-  const image = imageUrlBuilder(imageURL)
+  const image = imageUrlBuilderMany(images)[0]
+  console.log("image", image)
+  console.log("images", images)
   const ownerActions = withOwnerActions && [
     <EditOutlined key="edit" onClick={onUpdate} />,
     <DeleteOutlined key="delete" onClick={onDelete} />,

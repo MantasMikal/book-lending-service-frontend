@@ -20,6 +20,7 @@ const HomeLayout = () => {
     const fetchBooks = async () => {
       setIsLoading(true);
       const data = await fetchAllBooks();
+      console.log("HomeLayout -> data", data)
       !data && message.error("Error fetching books")
       setBooks(data);
       setIsLoading(false);

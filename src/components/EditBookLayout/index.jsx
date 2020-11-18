@@ -14,13 +14,14 @@ import {
   updateBookById,
 } from "../../utilities/fetch-helpers";
 import validateFile from "../../utilities/validate-file";
-import imageUrlBuilder from "../../utilities/image-builder";
+import {imageUrlBuilder} from "../../utilities/image-builder";
 
 import styles from "./EditBookLayout.module.scss";
 
 const EditBookLayout = ({ editView }) => {
-  console.log("EditBookLayout -> editView", editView)
+  console.log("EditBookLayout -> editView", editView);
   const [fileList, setFileList] = useState([]);
+  console.log("EditBookLayout -> fileList", fileList);
   const { user } = useContext(UserContext);
   const { ID, token } = user;
   const history = useHistory();
@@ -32,8 +33,16 @@ const EditBookLayout = ({ editView }) => {
     if (editView) {
       const fetchAndUpdateForm = async () => {
         const book = await fetchBookById(bookId);
-        !book && message.error('Could not fetch book data')
-        const { title, author, yearPublished, summary, ISBN, imageURL } = book;
+        !book && message.error("Could not fetch book data");
+        const {
+          title,
+          author,
+          yearPublished,
+          summary,
+          ISBN,
+          images,
+        } = book;
+
         const bookData = {
           title: title,
           author: author,
@@ -41,22 +50,29 @@ const EditBookLayout = ({ editView }) => {
           summary: summary,
           ISBN: ISBN !== "undefined" ? ISBN : "",
         };
+
         form.setFieldsValue(bookData); // Sets fetched fields to the form
 
-        // Create a mock file and add it to the image uploader,
-        // so you can send it back if it haven't changed
+        // Combines all images
+        const allImages = images && images.split(";")
+
+        // Create a mock file for each image and add it to the image uploader,
+        // so you can send it back if the images haven't changed
         // The backend will determine if the image already exists
         // from the file name
-        imageURL &&
-          setFileList([
-            {
-              uid: "-1",
-              name: imageURL,
+        const imageFiles =
+          allImages &&
+          allImages.length > 0 &&
+          allImages.map((image, i) => {
+            return {
+              uid: i,
+              name: image,
               status: "done",
-              url: imageUrlBuilder(imageURL),
-              originFileObj: new File([""], imageURL), // Mock file
-            },
-          ]);
+              url: imageUrlBuilder(image),
+              originFileObj: new File([""], image, { type: "image/jpeg" }), // Mock file,
+            };
+          });
+        setFileList(imageFiles);
       };
 
       fetchAndUpdateForm();

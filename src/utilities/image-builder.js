@@ -1,15 +1,26 @@
-import config from '../config'
-import imagePlaceholder from '../assets/images/image_placeholder.jpg'
+import config from "../config";
+import imagePlaceholder from "../assets/images/image_placeholder.jpg";
 
 /**
  * Utility to build image urls
  * With fallback image
  * @param {String} imageName image name on the server
+ * @returns {String} image url
  */
-const imageUrlBuilder = (imageName) => {
-  if(!imageName) return imagePlaceholder
-  const {API_HOST} = config
-  return `${API_HOST}/uploads/${imageName}`
-}
+export const imageUrlBuilder = (imageName) => {
+  if (!imageName) return imagePlaceholder;
+  const { API_HOST } = config;
+  return `${API_HOST}/uploads/${imageName}`;
+};
 
-export default imageUrlBuilder
+/**
+ * Utility to build image urls from array of images
+ * With fallback image
+ * @param {String} images string of image names separated by ';'
+ * @returns {Array} of image urls
+ */
+export const imageUrlBuilderMany = (images) => {
+  if (!images || Array.isArray(images) || !images.length > 0)
+    return [imagePlaceholder];
+  return images.split(";").map((img) => imageUrlBuilder(img));
+};

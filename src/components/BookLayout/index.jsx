@@ -4,11 +4,12 @@ import { message, Typography } from "antd";
 
 import Container from "../Container";
 import Badge from "../Badge";
-import imageUrlBuilder from "../../utilities/image-builder";
+import {imageUrlBuilderMany} from "../../utilities/image-builder";
 import { fetchBookById } from "../../utilities/fetch-helpers";
 import Spinner from "../Spinner";
 
 import styles from "./BookLayout.module.scss";
+import BookImages from "../BookImages";
 
 const { Title, Paragraph } = Typography;
 
@@ -21,26 +22,22 @@ const BookLayout = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const data = await fetchBookById(id);
-      !data && message.error("Error fetching books")
+      !data && message.error("Error fetching books");
       setBook(data);
-      setIsLoading(false)
+      setIsLoading(false);
     };
 
     fetchData();
   }, []);
 
+  const { title, summary, yearPublished, images } = book;
 
-  const { imageURL, title, summary, yearPublished } = book;
-  const image = imageUrlBuilder(imageURL);
-
+  const bookImages = imageUrlBuilderMany(images)
   return (
     <Container gutter center size="wide" fullHeight>
       {!isLoading ? (
         <div className={styles.BookLayout}>
-          <div
-            className={styles.Thumbnail}
-            style={{ backgroundImage: `url(${image})` }}
-          />
+          <BookImages images={bookImages} />
           <div className={styles.BookDetails}>
             <div className={styles.TitleWrapper}>
               <Title className={styles.Title} level={2}>
