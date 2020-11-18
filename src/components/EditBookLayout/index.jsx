@@ -19,9 +19,7 @@ import {imageUrlBuilder} from "../../utilities/image-builder";
 import styles from "./EditBookLayout.module.scss";
 
 const EditBookLayout = ({ editView }) => {
-  console.log("EditBookLayout -> editView", editView);
   const [fileList, setFileList] = useState([]);
-  console.log("EditBookLayout -> fileList", fileList);
   const { user } = useContext(UserContext);
   const { ID, token } = user;
   const history = useHistory();
@@ -162,6 +160,7 @@ const EditBookLayout = ({ editView }) => {
         labelCol={{ sm: { span: 6 }, lg: { span: 5 } }}
         labelAlign="left"
         encType="multipart/form-data"
+        layout='vertical'
       >
         <div className={styles.FormInner}>
           <div className={styles.FormWrapper}>
