@@ -9,7 +9,7 @@ import './assets/scss/base.scss';
 
 import Header from './components/Header'
 import Account from './components/account';
-import Register from './components/register';
+import Register from './components/RegistrationForm';
 import Login from './components/login';
 import Home from './components/HomeLayout';
 import Post from './components/post';

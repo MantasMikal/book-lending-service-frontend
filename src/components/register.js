@@ -38,6 +38,23 @@ const usernameRules = [
     { required: true, message: 'Please input your username!', whitespace: true }
 ]
 
+const cityRules = [
+    { required: true, message: 'Please input your city', whitespace: true, type: "string" }
+]
+
+const countryRules = [
+    { required: true, message: 'Please input your country', whitespace: true, type: "string" }
+]
+
+const addressRules = [
+    { required: true, message: 'Please input your address', whitespace: true, type: "string" }
+]
+
+const postcodeRules = [
+    { required: true, message: 'Please input your postcode', whitespace: true, type: "string" }
+]
+
+
 /**
  * Registration form component for app signup.
  */
@@ -86,6 +103,22 @@ class RegistrationForm extends React.Component {
         <Form.Item name="confirm" label="Confirm Password" dependencies={['password']}
             hasFeedback rules={confirmRules}>
             <Input.Password />
+        </Form.Item>
+
+        <Form.Item name="country" label="Country" rules={countryRules} >
+            <Input />
+        </Form.Item>
+
+        <Form.Item name="city" label="City" rules={cityRules} >
+            <Input />
+        </Form.Item>
+
+        <Form.Item name="postcode" label="Postcode" rules={postcodeRules} >
+            <Input />
+        </Form.Item>
+
+        <Form.Item name="address" label="Address" rules={addressRules} >
+            <Input />
         </Form.Item>
 
         <Form.Item name="username" label="Username" rules={usernameRules} >
