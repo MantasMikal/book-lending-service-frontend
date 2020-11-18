@@ -1,5 +1,7 @@
 import { message } from "antd"
 import { status, json } from "./requestHandlers"
+import config from '../config'
+const {API_URL} = config
 
 /**
  * Fetch book by ID
@@ -8,12 +10,11 @@ import { status, json } from "./requestHandlers"
  */
 export const fetchBookById = async (ID) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/books/${ID}`)
+    const response = await fetch(`${API_URL}/books/${ID}`)
     const resStatus = await status(response)
     const resJson = await json(resStatus)
     return resJson
   } catch (err) {
-    console.log("Error fetching books", err)
     message.error("Error fetching books")
   }
 }
@@ -25,7 +26,7 @@ export const fetchBookById = async (ID) => {
  */
 export const fetchBooksByUserId = async (ID) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/books/user/${ID}`)
+    const response = await fetch(`${API_URL}/books/user/${ID}`)
     const resStatus = await status(response)
     const resJson = await json(resStatus)
     return resJson
@@ -39,8 +40,9 @@ export const fetchBooksByUserId = async (ID) => {
  * @returns {Array} array of book objects
  */
 export const fetchAllBooks = async () => {
+  console.log(`${API_URL}/books/user/`)
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/books/`)
+    const response = await fetch(`${API_URL}/books/`)
     const resStatus = await status(response)
     const resJson = await json(resStatus)
     return resJson
@@ -56,7 +58,7 @@ export const fetchAllBooks = async () => {
  */
 export const deleteBookById = async (bookId, token) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/books/${bookId}`,
+    const response = await fetch(`${API_URL}/books/${bookId}`,
     {
       method: "DELETE",
       headers: {
@@ -81,7 +83,7 @@ export const deleteBookById = async (bookId, token) => {
 export const updateBookById = async (bookId, data, token) => {
   try {
     const response = await fetch(
-      `http://localhost:3030/api/v1/books/${bookId}`,
+      `${API_URL}/books/${bookId}`,
       {
         method: "PUT",
         headers: {
@@ -105,7 +107,7 @@ export const updateBookById = async (bookId, data, token) => {
  */
 export const addBook = async (data, token) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/books/`, {
+    const response = await fetch(`${API_URL}/books/`, {
       method: "POST",
       headers: {
         Authorization: "Basic " + token,

@@ -33,13 +33,11 @@ const UserBooksLayout = () => {
   }, [ID]);
 
   const handleDelete = async (bookId) => {
-    // Delete
     if(await deleteBookById(bookId, token)) {
       message.success("Book successfully deleted")
     } else {
       message.error("Error deleting book")
     }
-
     // Update the book list after deleting
     setIsLoading(true);
     const books = await fetchBooksByUserId(ID);

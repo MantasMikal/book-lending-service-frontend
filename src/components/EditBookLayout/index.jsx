@@ -32,6 +32,7 @@ const EditBookLayout = ({ editView }) => {
     if (editView) {
       const fetchAndUpdateForm = async () => {
         const book = await fetchBookById(bookId);
+        !book && message.error('Could not fetch book data')
         const { title, author, yearPublished, summary, ISBN, imageURL } = book;
         const bookData = {
           title: title,

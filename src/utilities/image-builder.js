@@ -8,8 +8,8 @@ import imagePlaceholder from '../assets/images/image_placeholder.jpg'
  */
 const imageUrlBuilder = (imageName) => {
   if(!imageName) return imagePlaceholder
-  const {API_URL} = config
-  return `${API_URL}/uploads/${imageName}`
+  const {API_HOST} = config
+  return `${API_HOST}/uploads/${imageName}`
 }
 
 export default imageUrlBuilder
