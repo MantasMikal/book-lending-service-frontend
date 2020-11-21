@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Input, message } from "antd";
 import { Typography } from "antd";
+import qs from "query-string";
 
-import { fetchAllBooks } from "../../utilities/fetch-helpers";
+import debounce from "../../utilities/debounce";
+import { fetchAllBooks, searchBooks } from "../../utilities/fetch-helpers";
 import Container from "../Container";
 import BookPreview from "../BookPreview";
 import Spinner from "../Spinner";
@@ -15,39 +17,65 @@ const { Title } = Typography;
 const HomeLayout = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(null);
 
+  // Fetch all books on mount
   useEffect(() => {
     const fetchBooks = async () => {
       setIsLoading(true);
-      const data = await fetchAllBooks();
-      console.log("HomeLayout -> data", data)
-      !data && message.error("Error fetching books")
-      setBooks(data);
+      if (!searchTerm) {
+        const books = await fetchAllBooks();
+        !books && message.error("Error fetching books");
+        setBooks(books);
+      } else {
+        const query = qs.stringify({
+          q: searchTerm,
+        });
+        const books = await searchBooks(query);
+        !books && message.error("Error fetching books");
+        setBooks(books);
+      }
       setIsLoading(false);
     };
     fetchBooks();
-  }, []);
+  }, [searchTerm]);
+
+  const handleSearch = debounce((e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+  }, 150);
 
   return (
-    <Container center gutter size="wide" fullHeight className={styles.HomeLayout}>
+    <Container
+      center
+      gutter
+      size="wide"
+      fullHeight
+      className={styles.HomeLayout}
+    >
       <div className={styles.SearchWrapper}>
-        <Title level={2}>All books</Title>
+        <Title level={2}>
+          {searchTerm ? `Searching for "${searchTerm}"` : "All books available"}
+        </Title>
         <Search
-          placeholder="input search text"
+          placeholder="Filter books by Title, author or isbn"
           allowClear
-          enterButton="Search"
+          enterButton={false}
           size="large"
-          onSearch={null}
+          defaultValue={searchTerm}
+          onChange={handleSearch}
         />
       </div>
-      {!isLoading && books && books.length > 0 ? (
+      {isLoading ? (
+        <Spinner />
+      ) : books && books.length > 0 ? (
         <div className={styles.BooksWrapper}>
           {books.map((book) => (
             <BookPreview key={`Book-${book.ID}`} {...book} />
           ))}
         </div>
       ) : (
-        <Spinner />
+        <p>No books found</p>
       )}
     </Container>
   );

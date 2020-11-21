@@ -2,7 +2,10 @@ import React from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { Card } from "antd";
-import {imageUrlBuilderMany} from "../../utilities/image-builder";
+import { imageUrlBuilderMany } from "../../utilities/image-builder";
+
+import Badge from "../Badge";
+import Thumbnail from "./components/Thumbnail";
 
 import styles from "./BookPreview.module.scss";
 
@@ -17,18 +20,26 @@ const BookPreview = ({
   onDelete,
   onUpdate,
 }) => {
-  const image = imageUrlBuilderMany(images)[0]
-  console.log("image", image)
-  console.log("images", images)
+  const image = imageUrlBuilderMany(images)[0];
   const ownerActions = withOwnerActions && [
     <EditOutlined key="edit" onClick={onUpdate} />,
     <DeleteOutlined key="delete" onClick={onDelete} />,
   ];
+
   return (
     <div className={styles.BookPreview}>
-      <Card cover={<div className={styles.Thumbnail} style={{backgroundImage: `url(${image})`}} />} actions={ownerActions}>
-        <a href={`/book/${ID}`}>
-          <Meta title={title} description={yearPublished} />
+      <Card
+        hoverable
+        cover={<Thumbnail href={`/book/${ID}`} image={image} />}
+        actions={ownerActions}
+      >
+        <a href={`/book/${ID}`} className={styles.MetaWrapper}>
+          <Meta
+            className={styles.Meta}
+            title={title}
+            description={yearPublished}
+          />
+          <Badge status="On Loan" />
         </a>
       </Card>
     </div>

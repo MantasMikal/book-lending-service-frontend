@@ -2,14 +2,20 @@ import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Input, message } from "antd";
 import { Typography } from "antd";
+import qs from "query-string";
+import {
+  deleteBookById,
+  fetchBooksByUserId,
+  searchBooks,
+} from "../../utilities/fetch-helpers";
 
-import { deleteBookById, fetchBooksByUserId } from "../../utilities/fetch-helpers";
 import Container from "../Container";
 import BookPreview from "../BookPreview";
 import UserContext from "../../contexts/user";
 import Spinner from "../Spinner";
 
 import styles from "./UserBooksLayout.module.scss";
+import debounce from "../../utilities/debounce";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -20,34 +26,51 @@ const UserBooksLayout = () => {
   const { user } = useContext(UserContext);
   const { ID, token } = user;
   const history = useHistory();
+  const [searchTerm, setSearchTerm] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const books = await fetchBooksByUserId(ID);
-      !books && message.error("Error fetching books")
-      setBooks(books);
+      // Get All or search if no search term given
+      if (!searchTerm) {
+        const books = await fetchBooksByUserId(ID);
+        !books && message.error("Error fetching books");
+        setBooks(books);
+      } else {
+        const query = qs.stringify({
+          q: searchTerm,
+          userId: ID,
+        });
+        const books = await searchBooks(query);
+        !books && message.error("Error fetching books");
+        setBooks(books);
+      }
       setIsLoading(false);
     };
     fetchData();
-  }, [ID]);
+  }, [ID, searchTerm]);
+
+  const handleSearch = debounce((e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+  }, 150);
 
   const handleDelete = async (bookId) => {
-    if(await deleteBookById(bookId, token)) {
-      message.success("Book successfully deleted")
+    if (await deleteBookById(bookId, token)) {
+      message.success("Book successfully deleted");
     } else {
-      message.error("Error deleting book")
+      message.error("Error deleting book");
     }
     // Update the book list after deleting
     setIsLoading(true);
     const books = await fetchBooksByUserId(ID);
-    !books && message.error("Error fetching books")
+    !books && message.error("Error deleting a book");
     setBooks(books);
     setIsLoading(false);
   };
 
   const handleUpdate = (bookId) => {
-    history.push(`/edit-book/${bookId}`);
+    history.push(`/my-books/edit/${bookId}`);
   };
 
   return (
@@ -59,30 +82,34 @@ const UserBooksLayout = () => {
       className={styles.UserBooksLayout}
     >
       <div className={styles.SearchWrapper}>
-        <Title level={2}>My Books</Title>
+        <Title level={2}>
+          {searchTerm ? `Searching your books for "${searchTerm}"` : "My Books"}
+        </Title>
         <Search
-          placeholder="input search text"
+          placeholder="Filter books by Title, author or isbn"
           allowClear
-          enterButton="Search"
+          enterButton={false}
           size="large"
-          onSearch={null}
+          defaultValue={searchTerm}
+          onChange={handleSearch}
         />
       </div>
-
-      {!isLoading && books && books.length > 0 ? (
+      {isLoading ? (
+        <Spinner />
+      ) : books && books.length > 0 ? (
         <div className={styles.BooksWrapper}>
           {books.map((book) => (
             <BookPreview
+              {...book}
               withOwnerActions
               key={`Book-${book.ID}`}
-              {...book}
               onDelete={() => handleDelete(book.ID)}
               onUpdate={() => handleUpdate(book.ID)}
             />
           ))}
         </div>
       ) : (
-        <Spinner />
+        <p>No books found</p>
       )}
     </Container>
   );

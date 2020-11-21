@@ -1,7 +1,6 @@
 @import "~antd/dist/antd.css";
 
 // Antd global overrides
-
 .ant-form-item {
   margin-bottom: 16px;
 }
@@ -15,7 +14,7 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
 }
 
 main {

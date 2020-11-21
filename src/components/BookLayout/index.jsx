@@ -4,56 +4,61 @@ import { message, Typography } from "antd";
 
 import Container from "../Container";
 import Badge from "../Badge";
-import {imageUrlBuilderMany} from "../../utilities/image-builder";
+import { imageUrlBuilderMany } from "../../utilities/image-builder";
 import { fetchBookById } from "../../utilities/fetch-helpers";
 import Spinner from "../Spinner";
+import BookImages from "../BookImages";
 
 import styles from "./BookLayout.module.scss";
-import BookImages from "../BookImages";
 
 const { Title, Paragraph } = Typography;
 
 const BookLayout = () => {
   const [book, setBook] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { id } = useParams();
+  const { bookId } = useParams();
+  const { title, summary, yearPublished, ISBN, images } = book;
+  const bookImages = imageUrlBuilderMany(images);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const data = await fetchBookById(id);
+      const data = await fetchBookById(bookId);
       !data && message.error("Error fetching books");
       setBook(data);
       setIsLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [bookId]);
 
-  const { title, summary, yearPublished, images } = book;
+  if (isLoading)
+    return (
+      <Container gutter center size="wide" fullHeight>
+        <Spinner />
+      </Container>
+    );
 
-  const bookImages = imageUrlBuilderMany(images)
   return (
     <Container gutter center size="wide" fullHeight>
-      {!isLoading ? (
-        <div className={styles.BookLayout}>
-          <BookImages images={bookImages} />
-          <div className={styles.BookDetails}>
-            <div className={styles.TitleWrapper}>
-              <Title className={styles.Title} level={2}>
-                {title}
-              </Title>
-              <Badge status="On Loan" />
-            </div>
-            <Title className={styles.YearPublished} level={4}>
-              {yearPublished}
-            </Title>
-            <Paragraph className={styles.Summary}>{summary}</Paragraph>
-          </div>
+      <div className={styles.BookLayout}>
+        <div className={styles.TitleWrapper}>
+          <Title className={styles.Title} level={2}>
+            {title}
+          </Title>
+          <Badge status="On Loan" />
         </div>
-      ) : (
-        <Spinner />
-      )}
+        <div className={styles.BookImages}>
+          <BookImages images={bookImages} />
+        </div>
+        <div className={styles.BookDetails}>
+          <Paragraph className={styles.YearPublished}>
+            Year published: {yearPublished}
+          </Paragraph>
+          {ISBN && <Paragraph className={styles.ISBN}>ISBN: {ISBN}</Paragraph>}
+          <Paragraph className={styles.Summary}>{summary}</Paragraph>
+        </div>
+      </div>
     </Container>
   );
 };
