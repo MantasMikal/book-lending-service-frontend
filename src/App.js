@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import {
   BrowserRouter as Router,
   Switch,
@@ -42,6 +42,7 @@ class App extends React.Component {
 
   logout() {
     localStorage.removeItem('user')
+    message.success('Logged out')
     this.setState({user: {loggedIn:false}});
   }
 
@@ -54,6 +55,8 @@ class App extends React.Component {
 
     console.log('USER: ', this.state.user)
 
+
+
     return (
       <UserContext.Provider value={context}>
         <Router>
@@ -63,10 +66,11 @@ class App extends React.Component {
               <Route path="/account" children={<Account />} />
               <Route path="/register" children={<RegistrationForm />} />
               <Route path="/login" children={<LoginForm />} />
-              <Route path="/book/:id" children={<BookLayout />} />
+              <Route path="/book/:bookId" children={<BookLayout />} />
+              <Route path="/my-books/edit/:bookId" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
-              <Route path="/edit-book/:bookId" children={<EditBookLayout editView/>} />
+              
               <Route path="/" children={<Home />} exact />
             </Switch>
           </Content>

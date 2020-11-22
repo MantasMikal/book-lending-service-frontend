@@ -16,7 +16,7 @@ const BookImages = ({ images }) => {
         {images &&
           images.length > 1 &&
           images.map((img, i) => (
-            <button className={styles.SmallThumbnail}>
+            <button key={`BookImage-${i}`} className={styles.SmallThumbnail}>
               <div
                 onClick={() => setCurrentImageId(i)}
                 className={styles.SmallImage}

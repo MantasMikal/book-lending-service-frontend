@@ -12,11 +12,24 @@
 }
 
 .TitleWrapper {
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
 .Title {
-  flex: 1 1 70%;
   margin-right: 16px;
+}
+
+.BookImages {
+  margin-bottom: 16px;
+}
+
+@include mq($breakpoint-desktop) {
+  .TitleWrapper {
+    display: flex;
+    align-items: center;
+
+    .Title {
+      margin-bottom: 0;
+    }
+  }  
 }

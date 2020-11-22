@@ -163,3 +163,17 @@ export const registerUser = async (data) => {
     return false
   }
 };
+
+export const searchBooks = async (query) => {
+  try {
+    const response = await fetch(`http://localhost:3030/api/v1/search/books?${query}`, {
+      method: "GET"
+    });
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Search failed", err);
+    return false
+  }
+}
