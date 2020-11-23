@@ -23,14 +23,14 @@ const EditBookLayout = ({ editView }) => {
   const { user } = useContext(UserContext);
   const { ID, token } = user;
   const history = useHistory();
-  const { bookId } = useParams();
+  const { bookID } = useParams();
   const [form] = Form.useForm();
 
   // Fetch book data and set it to form fields
   useEffect(() => {
     if (editView) {
       const fetchAndUpdateForm = async () => {
-        const book = await fetchBookById(bookId);
+        const book = await fetchBookById(bookID);
         !book && message.error("Could not fetch book data");
         const {
           title,
@@ -75,7 +75,7 @@ const EditBookLayout = ({ editView }) => {
 
       fetchAndUpdateForm();
     }
-  }, [bookId, editView, form]);
+  }, [bookID, editView, form]);
 
   // Extracts values from form fields and sends the data
   const onFinish = async (values) => {
@@ -101,7 +101,7 @@ const EditBookLayout = ({ editView }) => {
       });
 
     if (editView) {
-      await editBookRequest(bookId, formData, token);
+      await editBookRequest(bookID, formData, token);
     } else await addBookRequest(formData, token);
   };
 
@@ -133,8 +133,8 @@ const EditBookLayout = ({ editView }) => {
   };
 
   // Updates a book
-  const editBookRequest = async (bookId, data, token) => {
-    if (await updateBookById(bookId, data, token)) {
+  const editBookRequest = async (bookID, data, token) => {
+    if (await updateBookById(bookID, data, token)) {
       message.success("Book has been updated");
       history.push("/my-books");
     } else {

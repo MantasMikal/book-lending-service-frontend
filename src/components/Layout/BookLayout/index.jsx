@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button, message, Typography } from "antd";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
-import { fetchBookById } from "../../../utilities/fetch-helpers";
-
+import { fetchBookById, fetchUserById } from "../../../utilities/fetch-helpers";
 
 import Container from "../../Primitive/Container";
 import Badge from "../../Primitive/Badge";
@@ -19,9 +18,11 @@ const { Title, Paragraph } = Typography;
 const BookLayout = () => {
   const [book, setBook] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { bookId } = useParams();
+  const [bookOwner, setBookOwner] = useState({});
+  const { bookID } = useParams();
   const { user } = useContext(UserContext);
-  const history = useHistory()
+
+  const history = useHistory();
   const {
     ID,
     title,
@@ -36,15 +37,24 @@ const BookLayout = () => {
   const bookImages = imageUrlBuilderMany(images);
 
   useEffect(() => {
-    fetchData(bookId);
-  }, [bookId]);
+    fetchData(bookID);
+  }, [bookID]);
 
-  const fetchData = async (bookId) => {
+  const fetchData = async (bookID) => {
     setIsLoading(true);
-    const data = await fetchBookById(bookId);
-    !data && message.error("Error fetching books");
-    setBook(data);
+    const book = await fetchBookById(bookID);
+    !book && message.error("Error fetching books");
+    const { ownerID } = book;
+    await fetchBookOwner(ownerID, user.token);
+    setBook(book);
     setIsLoading(false);
+  };
+
+  const fetchBookOwner = async (userId, token) => {
+    const bookOwner = await fetchUserById(userId, token);
+    if(bookOwner) {
+      setBookOwner(bookOwner);
+    } else message.error("Error fetching books");
   };
 
   if (isLoading)
@@ -77,13 +87,27 @@ const BookLayout = () => {
                     <RequestBookModal
                       title={`A request for "${title}"`}
                       bookID={ID}
-                      onSubmit={() => fetchData(bookId)}
+                      ownerID={ownerID}
+                      onSubmit={() => fetchData(bookID)}
                     />
                   </div>
                 )}
-                {canEdit && <Button onClick={() => history.push(`/my-books/edit/${ID}`)} className={styles.EditButton}>Edit</Button>}
+                {canEdit && (
+                  <Button
+                    onClick={() => history.push(`/my-books/edit/${ID}`)}
+                    className={styles.EditButton}
+                  >
+                    Edit
+                  </Button>
+                )}
               </div>
             </div>
+            {bookOwner && (
+              <Paragraph className={styles.YearPublished}>
+                Book owner:{" "}
+                <a href={`/users/${ownerID}`}>{bookOwner.username}</a>
+              </Paragraph>
+            )}
             <Paragraph className={styles.YearPublished}>
               Year published: {yearPublished}
             </Paragraph>

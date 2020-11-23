@@ -1,0 +1,41 @@
+@import "../../../assets/scss/utils.scss";
+
+.MessageWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid $color--grey-light;
+  padding: 8px;
+  border-radius: 3px;
+  align-self: flex-start;
+  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.MessageBody {
+  display: block;
+}
+
+.MessageTimestamp {
+  display: block;
+  font-size: 10px;
+}
+
+.Avatar {
+  margin-right: 8px;
+}
+
+.fromSender {
+  &.MessageWrapper {
+    justify-content: flex-end;
+    align-self: flex-end;
+  }
+
+  .Message {
+    text-align: right;
+  }
+
+  .Avatar {
+    margin-left: 8px;
+    order: 2;
+  }
+}

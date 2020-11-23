@@ -13,6 +13,8 @@
 
 .RequestDetails {
   padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid $color--grey-light;
 }
 
 .Title {
@@ -35,6 +37,10 @@
   }
 }
 
+.ViewBookLink {
+  display: block;
+}
+
 .Messages {
   display: flex;
   flex-direction: column;
@@ -44,49 +50,7 @@
   overflow: auto;
 }
 
-.MessageWrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #f0f0f0;
-  padding: 8px;
-  align-self: flex-start;
-  margin-bottom: 8px;
-  margin-right: 8px;
-}
-
 .MessageInput {
   display: flex;
   margin-top: auto;
-}
-
-
-.Message {
-  .MessageBody {
-    display: block;
-  }
-
-  .MessageTimestamp {
-    display: block;
-    font-size: 10px;
-  }
-}
-
-.Avatar {
-  margin-right: 8px;
-}
-
-.reverse {
-  &.MessageWrapper {
-    justify-content: flex-end;
-    align-self: flex-end;
-  }
-
-  .Message {
-    text-align: right;
-  }
-
-  .Avatar {
-    margin-left: 8px;
-    order: 2;
-  }
 }

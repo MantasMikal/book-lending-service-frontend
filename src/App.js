@@ -67,11 +67,11 @@ class App extends React.Component {
               <Route path="/account" children={<Account />} />
               <Route path="/register" children={<RegistrationForm />} />
               <Route path="/login" children={<LoginForm />} />
-              <Route path="/book/:bookId" children={<BookLayout />} />
-              <Route path="/my-books/edit/:bookId" children={<EditBookLayout editView/>}/>
+              <Route path="/book/:bookID" children={<BookLayout />} />
+              <Route path="/my-books/edit/:bookID" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
-              <Route path="/book-requests/:requestId" children={<RequestLayout />} />
+              <Route path="/book-requests/:requestID" children={<RequestLayout />} />
               <Route path="/book-requests" children={<RequestsLayout />} />
               <Route path="/" children={<Home />} exact />
             </Switch>
