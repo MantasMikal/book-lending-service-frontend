@@ -103,7 +103,6 @@ export const updateBookById = async (bookId, data, token) => {
  * @param {FormData} data book data as FormData
  */
 export const addBook = async (data, token) => {
-  console.log("token", token);
   try {
     const response = await fetch(`${API_URL}/books/`, {
       method: "POST",
@@ -160,20 +159,78 @@ export const registerUser = async (data) => {
     return true;
   } catch (err) {
     console.log("Login failed", err);
-    return false
+    return false;
   }
 };
 
+/**
+ * Searches for books
+ * @param {String} query query
+ * @returns {Array} book objects
+ */
 export const searchBooks = async (query) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/search/books?${query}`, {
-      method: "GET"
-    });
+    const response = await fetch(
+      `http://localhost:3030/api/v1/search/books?${query}`,
+      {
+        method: "GET",
+      }
+    );
     const respStatus = await status(response);
     const respJson = await json(respStatus);
     return respJson;
   } catch (err) {
     console.log("Search failed", err);
-    return false
+    return false;
   }
-}
+};
+
+/**
+ * Gets user requests
+ * @param {Number} id userID
+ * @param {String} token Authentication token
+ * @returns {Array} request objects
+ */
+export const getUserRequests = async (id, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3030/api/v1/requests/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + token,
+        },
+      }
+    );
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Could not get user requests", err);
+    return false;
+  }
+};
+
+/**
+ * Makes a book request
+ * @param {String} token authorization token
+ * @param {Object} data request data
+ */
+export const requestBook = async (data, token) => {
+  try {
+    const response = await fetch(`${API_URL}/requests`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Error making book request", err);
+    return false;
+  }
+};

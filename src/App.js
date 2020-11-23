@@ -7,16 +7,17 @@ import {
 } from "react-router-dom";
 import './assets/scss/base.scss';
 
-import Header from './components/Header'
+import Header from './components/Common/Header'
 import Account from './components/account';
-import Home from './components/HomeLayout';
-
+import Home from './components/Layout/HomeLayout';
 import UserContext from './contexts/user';
-import BookLayout from './components/BookLayout';
-import UserBooksLayout from './components/UserBooksLayout';
-import EditBookLayout from './components/EditBookLayout';
-import LoginForm from './components/LoginForm';
-import RegistrationForm from './components/RegistrationForm';
+import BookLayout from './components/Layout/BookLayout';
+import UserBooksLayout from './components/Layout/UserBooksLayout';
+import EditBookLayout from './components/Layout/EditBookLayout';
+import LoginForm from './components/Common/LoginForm';
+import RegistrationForm from './components/Common/RegistrationForm';
+import RequestsLayout from './components/Layout/RequestsLayout';
+import RequestLayout from './components/Layout/RequestLayout';
 
 const { Content, Footer } = Layout;
 
@@ -70,13 +71,11 @@ class App extends React.Component {
               <Route path="/my-books/edit/:bookId" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
-              
+              <Route path="/book-requests/:requestId" children={<RequestLayout />} />
+              <Route path="/book-requests" children={<RequestsLayout />} />
               <Route path="/" children={<Home />} exact />
             </Switch>
           </Content>
-
-          <Footer style={{ textAlign: 'center' }}>Created for 304CEM</Footer>
-
         </Router>
       </UserContext.Provider>  
     );

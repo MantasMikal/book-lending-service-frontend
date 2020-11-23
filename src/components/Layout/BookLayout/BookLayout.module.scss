@@ -1,0 +1,54 @@
+@import '../../../assets/scss/utils.scss';
+
+.TitleWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}  
+
+.Title {
+  display: inline-block;
+  margin-bottom: 0 !important;
+  padding-right: 16px;
+  padding-bottom: 4px;
+}
+
+.Badge {
+  margin-right: 16px;
+}
+
+.Thumbnail {
+  height: 0;
+  overflow: hidden;
+  padding-top: 56%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 16px;
+}
+
+.TitleWrapper {
+  margin-bottom: 16px;
+}
+
+.Title, .Badge, .EditButton {
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+
+@include mq($breakpoint-desktop) {
+ .BookWrapper {
+    display: flex;
+
+    .BookImages {
+      flex: 1 1 50%;
+      margin-right: 32px;
+    }
+
+    .BookDetails {
+      flex: 1 1 50%;
+    }
+  }
+
+}
