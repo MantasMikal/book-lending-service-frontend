@@ -5,6 +5,27 @@ import config from "../config";
 const { API_URL } = config;
 
 /**
+ * Fetch user by ID
+ * @param {Number} ID - user Id
+ * @returns {Object} user object
+ */
+export const fetchUserById = async (userID, token) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userID}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + token,
+      },
+    });
+    const resStatus = await status(response);
+    const resJson = await json(resStatus);
+    return resJson;
+  } catch (err) {
+    message.error("Error fetching user");
+  }
+};
+
+/**
  * Fetch book by ID
  * @param {Number} ID - book Id
  * @returns {Object} a book

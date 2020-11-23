@@ -105,7 +105,7 @@ const BookLayout = () => {
             {bookOwner && (
               <Paragraph className={styles.YearPublished}>
                 Book owner:{" "}
-                <a href={`/users/${ownerID}`}>{bookOwner.username}</a>
+                <a href={`/user/${ownerID}`}>{bookOwner.username}</a>
               </Paragraph>
             )}
             <Paragraph className={styles.YearPublished}>

@@ -18,6 +18,7 @@ import LoginForm from './components/Common/LoginForm';
 import RegistrationForm from './components/Common/RegistrationForm';
 import RequestsLayout from './components/Layout/RequestsLayout';
 import RequestLayout from './components/Layout/RequestLayout';
+import UserLayout from './components/Layout/UserLayout'
 
 const { Content, Footer } = Layout;
 
@@ -73,6 +74,7 @@ class App extends React.Component {
               <Route path="/add-book" children={<EditBookLayout />} />
               <Route path="/book-requests/:requestID" children={<RequestLayout />} />
               <Route path="/book-requests" children={<RequestsLayout />} />
+              <Route path="/user/:userID" children={<UserLayout />} />
               <Route path="/" children={<Home />} exact />
             </Switch>
           </Content>
