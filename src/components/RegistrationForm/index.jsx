@@ -40,6 +40,10 @@ const RegistrationForm = () => {
               <Input />
             </Form.Item>
 
+            <Form.Item name="fullName" label="Full Name" rules={fullNameRules}>
+              <Input />
+            </Form.Item>
+
             <Form.Item name="email" label="E-mail" rules={emailRules}>
               <Input />
             </Form.Item>
@@ -120,6 +124,11 @@ const confirmRules = [
 
 const usernameRules = [
   { required: true, message: "Please input your username!", whitespace: true },
+];
+
+
+const fullNameRules = [
+  { required: true, message: "Please input your full name!", whitespace: true },
 ];
 
 const cityRules = [

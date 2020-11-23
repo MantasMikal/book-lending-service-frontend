@@ -55,8 +55,8 @@ const UserBooksLayout = () => {
     setSearchTerm(value);
   }, 150);
 
-  const handleDelete = async (bookId) => {
-    if (await deleteBookById(bookId, token)) {
+  const handleDelete = async (bookID) => {
+    if (await deleteBookById(bookID, token)) {
       message.success("Book successfully deleted");
     } else {
       message.error("Error deleting book");
@@ -69,8 +69,8 @@ const UserBooksLayout = () => {
     setIsLoading(false);
   };
 
-  const handleUpdate = (bookId) => {
-    history.push(`/my-books/edit/${bookId}`);
+  const handleUpdate = (bookID) => {
+    history.push(`/my-books/edit/${bookID}`);
   };
 
   return (

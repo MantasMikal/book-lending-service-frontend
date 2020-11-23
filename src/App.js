@@ -17,6 +17,7 @@ import UserBooksLayout from './components/UserBooksLayout';
 import EditBookLayout from './components/EditBookLayout';
 import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
+import UserLayout from './components/Layout/UserLayout';
 
 const { Content, Footer } = Layout;
 
@@ -70,7 +71,7 @@ class App extends React.Component {
               <Route path="/my-books/edit/:bookId" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
-              
+              <Route path="/user/:userID" children={<UserLayout />} />
               <Route path="/" children={<Home />} exact />
             </Switch>
           </Content>
