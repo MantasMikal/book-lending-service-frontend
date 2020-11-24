@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from 'moment'
+import moment from "moment";
 import cn from "classnames";
 import Avatar from "antd/lib/avatar/avatar";
 import Text from "antd/lib/typography/Text";
@@ -9,7 +9,8 @@ import { UserOutlined } from "@ant-design/icons";
 import styles from "./Message.module.scss";
 
 const Message = ({ userID, message }) => {
-  const { senderID, dateCreated } = message;
+  const { dateCreated, senderID } = message;
+  console.log("🚀 ~ file: index.jsx ~ line 13 ~ Message ~ dateCreated", dateCreated)
   const messageBody = message.message;
   const formattedDate = moment
     .utc(dateCreated)
@@ -34,11 +35,12 @@ const Message = ({ userID, message }) => {
 };
 
 Message.propTypes = {
-  userID: PropTypes.number.isRequired,
+  senderID: PropTypes.number.isRequired,
   message: PropTypes.shape({
-    senderID: PropTypes.number.isRequired,
-    dateCreated: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
+    senderID: PropTypes.number.isRequired,
+    receiverID: PropTypes.number.isRequired,
+    dateCreated: PropTypes.string.isRequired,
   }),
 };
 

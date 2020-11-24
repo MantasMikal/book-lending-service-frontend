@@ -1,31 +1,32 @@
 import React from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
-import { Card } from "antd";
+import PropTypes from "prop-types";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
-
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Card } from "antd";
 import Badge from "../../Primitive/Badge";
 import Thumbnail from "./components/Thumbnail";
 
 import styles from "./BookPreview.module.scss";
 
 const { Meta } = Card;
-
+/**
+ * Renders a book preview card
+ */
 const BookPreview = ({
   images,
   title,
   yearPublished,
   ID,
   status,
-  withOwnerActions,
   onDelete,
   onUpdate,
 }) => {
-  const image = imageUrlBuilderMany(images)[0];
-  const ownerActions = withOwnerActions && [
+  // Actions with the book if available
+  const ownerActions = onUpdate && onDelete && [
     <EditOutlined key="edit" onClick={onUpdate} />,
     <DeleteOutlined key="delete" onClick={onDelete} />,
   ];
+  const image = imageUrlBuilderMany(images)[0];
 
   return (
     <div className={styles.BookPreview}>
@@ -47,6 +48,14 @@ const BookPreview = ({
   );
 };
 
-BookPreview.propTypes = {};
+BookPreview.propTypes = {
+  images: PropTypes.array,
+  title: PropTypes.string.isRequired,
+  yearPublished: PropTypes.string.isRequired,
+  ID: PropTypes.number.isRequired,
+  status: PropTypes.string,
+  onDelete: PropTypes.func,
+  onUpdate: PropTypes.func
+};
 
 export default BookPreview;

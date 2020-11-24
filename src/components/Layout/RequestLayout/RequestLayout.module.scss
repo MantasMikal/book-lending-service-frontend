@@ -14,7 +14,6 @@
 .RequestDetails {
   padding-bottom: 8px;
   margin-bottom: 8px;
-  border-bottom: 1px solid $color--grey-light;
 }
 
 .Title {
@@ -53,4 +52,12 @@
 .MessageInput {
   display: flex;
   margin-top: auto;
+}
+
+.Receiver {
+  text-align: center;
+  padding: 8px 0;
+  margin-top: 16px;
+  border-top: 1px solid $color--grey-light;
+  border-bottom: 1px solid $color--grey-light;
 }

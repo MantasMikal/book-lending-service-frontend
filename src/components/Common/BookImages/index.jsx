@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./BookImages.module.scss";
 
+/**
+ * A component to display multiple book images
+ */
 const BookImages = ({ images }) => {
   const [currentImageId, setCurrentImageId] = useState(0);
   const currentImage = images[currentImageId];
-
   return (
     <div className={styles.BookImages}>
       <div

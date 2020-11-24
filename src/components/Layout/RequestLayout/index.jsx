@@ -1,46 +1,63 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./RequestLayout.module.scss";
-import Container from "../../Primitive/Container";
-import Title from "antd/lib/typography/Title";
-import Text from "antd/lib/typography/Text";
-import { Button, Input, message } from "antd";
+import { useParams } from "react-router-dom";
 import moment from "moment";
-
-import UserContext from "../../../contexts/user";
 import {
   getRequestMessages,
   getRequestById,
   sendMessage,
+  fetchUserById,
 } from "../../../utilities/fetch-helpers";
-import { useParams } from "react-router-dom";
-import Message from "../../Common/Message";
+
+import Title from "antd/lib/typography/Title";
+import Text from "antd/lib/typography/Text";
+import { Button, message } from "antd";
+import UserContext from "../../../contexts/user";
+import Container from "../../Primitive/Container";
+
 import Spinner from "../../Primitive/Spinner";
 
-const RequestLayout = (props) => {
+import styles from "./RequestLayout.module.scss";
+import Messenger from "../../Common/Messenger";
+
+const RequestLayout = () => {
   const { user } = useContext(UserContext);
   const { ID, token } = user;
   const { requestID } = useParams();
   const [messages, setMessages] = useState([]);
   const [request, setRequest] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [messageInput, setMessageInput] = useState("");
+  const [otherParticipant, setOtherParticipant] = useState({});
 
-  // Get other participant ID
-  const receiverID =
-    request.requesterID === ID ? request.bookOwnerID : request.requesterID;
+  const isBookOwner = request.bookOwnerID === ID;
+  const isBookRequester = request.requesterID === ID;
+  const { title, dateCreated, bookID } = request;
+  const formattedDate = moment
+    .utc(dateCreated)
+    .local()
+    .format("MM/DD/YYYY, h:mm a")
+    .toString();
 
   useEffect(() => {
-    setIsLoading(true);
+    const fetchRequest = async (requestID, token) => {
+      setIsLoading(true);
+      const request = await getRequestById(requestID, token);
+      !request && message.error("Error fetching request");
+      if (request[0]) {
+        const { bookOwnerID, requesterID } = request[0];
+        const otherParticipantID =
+          requesterID === ID ? bookOwnerID : requesterID;
+        await fetchOtherParticipant(token, otherParticipantID);
+        setRequest(request[0]);
+        setIsLoading(false);
+      }
+    };
     fetchRequest(requestID, token);
     fetchMessages(requestID, token);
-    setIsLoading(false);
-  }, [requestID, token]);
+  }, [requestID, token, ID]);
 
   // Fetch messages every 3s
   useEffect(() => {
     const timer = setInterval(() => {
-      console.log("Fetching new messages");
       fetchMessages(requestID, token);
     }, 3000);
     return () => clearInterval(timer);
@@ -52,82 +69,60 @@ const RequestLayout = (props) => {
     setMessages(messages);
   };
 
-  const fetchRequest = async (requestID, token) => {
-    const request = await getRequestById(requestID, token);
-    !request && message.error("Error fetching request");
-    request[0] && setRequest(request[0]);
+  const fetchOtherParticipant = async (token, userID) => {
+    const user = await fetchUserById(userID, token);
+    !user && message.error("Could not fetch user");
+    setOtherParticipant(user);
   };
 
-  const handleMessageInput = (e) => {
-    const message = e.target.value;
-    setMessageInput(message);
-  };
-
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = async (msg) => {
     const data = {
-      message: messageInput,
+      message: msg,
       senderID: ID,
-      receiverID: receiverID,
+      receiverID: otherParticipant.ID,
       requestID: parseInt(requestID),
     };
-
     if (await sendMessage(token, data)) {
       fetchMessages(requestID, token);
-      setMessageInput("");
     } else {
       message.error("Could not send message");
     }
   };
 
-  const { title, dateCreated, bookID } = request;
-  const formattedDate = moment
-    .utc(dateCreated)
-    .local()
-    .format("MM/DD/YYYY, h:mm a")
-    .toString();
-  return (
-    request && (
+  if (isLoading)
+    return (
       <Container gutter fullHeight className={styles.RequestLayout}>
-        <div className={styles.RequestDetails}>
-          <div className={styles.Title}>
-            <Title level={2}>{title}</Title>
-            <div className={styles.Actions}>
-              <Button>Accept</Button>
-              <Button danger>Decline</Button>
-            </div>
-          </div>
-          <Text>{formattedDate}</Text>
-          <Text className={styles.ViewBookLink}>
-            <a href={`/book/${bookID}`}>View book</a>
-          </Text>
-        </div>
-        <div className={styles.Messages}>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            messages &&
-            messages.length > 0 &&
-            messages.map((message, i) => (
-              <Message key={`Message-${i}`} message={message} userID={ID} />
-            ))
-          )}
-        </div>
-        <div className={styles.MessageInput}>
-          <Input
-            onChange={handleMessageInput}
-            onPressEnter={handleSendMessage}
-            value={messageInput}
-            placeholder="Type your message..."
-          />
-          <Button
-            disabled={messageInput.length < 1}
-            onClick={handleSendMessage}
-          >
-            Send
-          </Button>
-        </div>
+        <Spinner />
       </Container>
-    )
+    );
+
+  return (
+    <Container gutter fullHeight className={styles.RequestLayout}>
+      <div className={styles.RequestDetails}>
+        <div className={styles.Title}>
+          <Title level={2}>{title}</Title>
+          <div className={styles.Actions}>
+            {isBookOwner && (
+              <>
+                <Button>Accept</Button>
+                <Button danger>Decline</Button>
+              </>
+            )}
+            {isBookRequester && <Button danger>Cancel</Button>}
+          </div>
+        </div>
+        <Text className={styles.ViewBookLink}>
+          <a href={`/book/${bookID}`}>View book</a>
+        </Text>
+        <Text>{formattedDate}</Text>
+      </div>
+      <Messenger
+          messages={messages}
+          receiver={otherParticipant}
+          onSend={handleSendMessage}
+          userID={ID}
+        />
+    </Container>
   );
 };
 

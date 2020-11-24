@@ -1,19 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import moment from "moment";
-import PropTypes from "prop-types";
+
 import styles from "./RequestsLayout.module.scss";
 import Container from "../../Primitive/Container";
-import Avatar from "antd/lib/avatar/avatar";
-import { Button, List, message, Tabs } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import Text from "antd/lib/typography/Text";
+import { message, Tabs } from "antd";
 import {
   deleteBookRequest,
   getUserRequests,
 } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
+import RequestsList from "../../Common/RequestsList";
 
-const RequestsLayout = (props) => {
+const RequestsLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [requests, setRequests] = useState({
     userRequests: [],
@@ -61,13 +58,13 @@ const RequestsLayout = (props) => {
         onChange={() => {}}
       >
         <Tabs.TabPane tab="Incoming requests" key="1">
-          <Requests
+          <RequestsList
             isLoading={isLoading}
             requests={requests.incomingRequests}
           />
         </Tabs.TabPane>
         <Tabs.TabPane tab="My requests" key="2">
-          <Requests
+          <RequestsList
             isLoading={isLoading}
             requests={requests.userRequests}
             onCancel={handleDelete}
@@ -80,46 +77,6 @@ const RequestsLayout = (props) => {
 
 RequestsLayout.propTypes = {};
 
-const Requests = ({ requests, isLoading, onCancel }) => {
-  return (
-    <div className={styles.Requests}>
-      <List
-        loading={isLoading}
-        itemLayout="horizontal"
-        dataSource={requests}
-        renderItem={(request) => {
-          const { dateCreated, title, ID } = request;
-          const formattedDate = moment
-            .utc(dateCreated)
-            .local()
-            .format("MM/DD/YYYY, h:mm a")
-            .toString();
-          return (
-            <List.Item
-              actions={[
-                onCancel && (
-                  <Button onClick={() => onCancel(ID)}>Cancel</Button>
-                ),
-              ]}
-            >
-              <List.Item.Meta
-                avatar={<Avatar icon={<UserOutlined />} />}
-                title={<a href={`/book-requests/${ID}`}>{title}</a>}
-                description={
-                  <a
-                    href={`/book-requests/${ID}`}
-                    className={styles.RequestDetails}
-                  >
-                    <Text>{formattedDate}</Text>
-                  </a>
-                }
-              />
-            </List.Item>
-          );
-        }}
-      />
-    </div>
-  );
-};
+
 
 export default RequestsLayout;

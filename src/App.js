@@ -14,13 +14,13 @@ import UserContext from './contexts/user';
 import BookLayout from './components/Layout/BookLayout';
 import UserBooksLayout from './components/Layout/UserBooksLayout';
 import EditBookLayout from './components/Layout/EditBookLayout';
-import LoginForm from './components/Common/LoginForm';
-import RegistrationForm from './components/Common/RegistrationForm';
 import RequestsLayout from './components/Layout/RequestsLayout';
 import RequestLayout from './components/Layout/RequestLayout';
 import UserLayout from './components/Layout/UserLayout'
+import LoginLayout from './components/Layout/LoginLayout';
+import RegistrationLayout from './components/Layout/RegistrationLayout';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 class App extends React.Component {
 
@@ -57,8 +57,6 @@ class App extends React.Component {
 
     console.log('USER: ', this.state.user)
 
-
-
     return (
       <UserContext.Provider value={context}>
         <Router>
@@ -66,8 +64,8 @@ class App extends React.Component {
           <Content>
             <Switch>
               <Route path="/account" children={<Account />} />
-              <Route path="/register" children={<RegistrationForm />} />
-              <Route path="/login" children={<LoginForm />} />
+              <Route path="/register" children={<RegistrationLayout />} />
+              <Route path="/login" children={<LoginLayout />} />
               <Route path="/book/:bookID" children={<BookLayout />} />
               <Route path="/my-books/edit/:bookID" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
