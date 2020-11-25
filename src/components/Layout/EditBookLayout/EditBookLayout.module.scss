@@ -1,0 +1,15 @@
+@import '../../../assets/scss/utils.scss';
+
+@include mq($breakpoint-tablet){
+  .FormInner {
+    display: flex;
+  }
+  
+  .FormWrapper {
+    flex: 1 1 50%;
+  
+    &:first-child {
+      margin-right: 32px;
+    }
+  }
+}

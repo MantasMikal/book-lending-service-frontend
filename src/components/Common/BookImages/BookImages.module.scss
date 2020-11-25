@@ -1,0 +1,45 @@
+@import '../../../assets/scss/utils.scss';
+
+.Thumbnail, .SmallImage {
+  height: 0;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 16px;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+}
+
+.Thumbnail {
+  padding-top: 56%;
+}
+
+.Images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.SmallThumbnail {
+  flex: 1 1 50px;
+  height: 50px;
+  max-width: 50px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.SmallImage {
+  position: relative;
+  padding-top: 100%;
+}
+
+@include mq($breakpoint-tablet) {
+  .SmallThumbnail {
+    flex: 1 1 100px;
+    height: 100px;
+    max-width: 100px;
+  }
+}

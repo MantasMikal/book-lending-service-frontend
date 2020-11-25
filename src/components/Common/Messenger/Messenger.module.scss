@@ -1,0 +1,39 @@
+@import "../../../assets/scss/utils.scss";
+
+.Messenger {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1 1;
+}
+
+.Header {
+  text-align: center;
+  padding: 8px 0;
+  margin: 16px 0;
+  border-top: 1px solid $color--grey-light;
+  border-bottom: 1px solid $color--grey-light;
+}
+
+.Messages {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 16px;
+  flex: 1 1;
+  overflow: auto;
+
+  & > div:not(.Anchor) {
+    overflow-anchor: none;
+  }
+
+  .Anchor {
+    overflow-anchor: auto;
+    height: 1px;
+  }
+}
+
+.MessageInput {
+  display: flex;
+  margin-top: auto;
+}

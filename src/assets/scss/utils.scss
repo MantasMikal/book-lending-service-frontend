@@ -1,8 +1,11 @@
 @import './settings/mixins.scss';
 
 // Breakpoints
-
 $breakpoint-mobile: 500px;
 $breakpoint-tablet: 700px;
 $breakpoint-desktop: 900px;
 $breakpoint-desktop--medium: 1200px;
+
+// Colors
+$color--primary: #1890ff;
+$color--grey-light:  #f0f0f0;

@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./UserLayout.module.scss";
-import Container from "../../Container";
+import { useParams } from "react-router-dom";
 import { fetchUserById } from "../../../utilities/fetch-helpers";
 import { Descriptions, message } from "antd";
-import { useParams } from "react-router-dom";
 import UserContext from "../../../contexts/user";
 import Title from "antd/lib/typography/Title";
-import Paragraph from "antd/lib/skeleton/Paragraph";
+import Container from "../../Primitive/Container";
+import Spinner from "../../Primitive/Spinner";
 
-const UserLayout = (props) => {
+const UserLayout = () => {
   const [account, setAccount] = useState({});
-  console.log("🚀 ~ file: index.jsx ~ line 12 ~ account", account);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(UserContext);
   const { token } = user;
@@ -32,6 +29,11 @@ const UserLayout = (props) => {
 
   const { username, email, address, postcode, city, country, fullName } = account;
 
+  if(isLoading) (
+    <Container gutter>
+      <Spinner />
+    </Container>
+  )
   return (
     <Container gutter>
       <Title level={2}>User {username} details</Title>

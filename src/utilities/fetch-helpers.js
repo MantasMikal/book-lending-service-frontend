@@ -75,12 +75,12 @@ export const fetchAllBooks = async () => {
 
 /**
  * Delete a book
- * @param {Number} bookId ID of the book
+ * @param {Number} bookID ID of the book
  * @param {String} token authorization token
  */
-export const deleteBookById = async (bookId, token) => {
+export const deleteBookById = async (bookID, token) => {
   try {
-    const response = await fetch(`${API_URL}/books/${bookId}`, {
+    const response = await fetch(`${API_URL}/books/${bookID}`, {
       method: "DELETE",
       headers: {
         Authorization: "Basic " + token,
@@ -97,13 +97,13 @@ export const deleteBookById = async (bookId, token) => {
 
 /**
  * Update a book
- * @param {Number} bookId ID of the book
+ * @param {Number} bookID ID of the book
  * @param {String} token authorization token
  * @param {FormData} data book data as FormData
  */
-export const updateBookById = async (bookId, data, token) => {
+export const updateBookById = async (bookID, data, token) => {
   try {
-    const response = await fetch(`${API_URL}/books/${bookId}`, {
+    const response = await fetch(`${API_URL}/books/${bookID}`, {
       method: "PUT",
       headers: {
         Authorization: "Basic " + token,
@@ -124,7 +124,6 @@ export const updateBookById = async (bookId, data, token) => {
  * @param {FormData} data book data as FormData
  */
 export const addBook = async (data, token) => {
-  console.log("token", token);
   try {
     const response = await fetch(`${API_URL}/books/`, {
       method: "POST",
@@ -181,20 +180,199 @@ export const registerUser = async (data) => {
     return true;
   } catch (err) {
     console.log("Login failed", err);
-    return false
+    return false;
   }
 };
 
+/**
+ * Searches for books
+ * @param {String} query query
+ * @returns {Array} book objects
+ */
 export const searchBooks = async (query) => {
   try {
-    const response = await fetch(`http://localhost:3030/api/v1/search/books?${query}`, {
-      method: "GET"
-    });
+    const response = await fetch(
+      `http://localhost:3030/api/v1/search/books?${query}`,
+      {
+        method: "GET",
+      }
+    );
     const respStatus = await status(response);
     const respJson = await json(respStatus);
     return respJson;
   } catch (err) {
     console.log("Search failed", err);
-    return false
+    return false;
   }
-}
+};
+
+/**
+ * Gets user requests
+ * @param {Number} id userID
+ * @param {String} token Authentication token
+ * @returns {Array} request objects
+ */
+export const getUserRequests = async (id, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3030/api/v1/requests/user/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + token,
+        },
+      }
+    );
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Could not get user requests", err);
+    return false;
+  }
+};
+
+/**
+ * Gets user requests
+ * @param {Number} requestId userID
+ * @param {String} token Authentication token
+ * @returns {Array} request objects
+ */
+export const getRequestById = async (requestId, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3030/api/v1/requests/${requestId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + token,
+        },
+      }
+    );
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Could not get user requests", err);
+    return false;
+  }
+};
+
+/**
+ * Makes a book request
+ * @param {String} token authorization token
+ * @param {Object} data request data
+ */
+export const requestBook = async (data, token) => {
+  try {
+    const response = await fetch(`${API_URL}/requests`, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Error making book request", err);
+    return false;
+  }
+};
+
+/**
+ * Makes a book request
+ * @param {Number} bookID book ID
+ * @param {String} token authorization token
+ * @param {Object} data request data
+ */
+export const updateBookStatus = async (bookID, data, token) => {
+  try {
+    const response = await fetch(`${API_URL}/books/status/${bookID}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    await status(response);
+    return true
+  } catch (err) {
+    console.log("Error updating book", err);
+    return false;
+  }
+};
+
+/**
+ * Deletes a book request
+ * @param {Number} requestID request ID
+ * @param {String} token authorization token
+ */
+export const deleteBookRequest = async (requestID, token) => {
+  try {
+    const response = await fetch(`${API_URL}/requests/${requestID}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Basic " + token,
+      },
+    });
+    await status(response);
+    return true;
+  } catch (err) {
+    console.log("Could not delete request", err);
+    return false;
+  }
+};
+
+/**
+ * Send a message
+ * @param {String} token authorization token
+ * @param {Object} data message data
+ * @returns {Boolean} true/false if success
+ */
+export const sendMessage = async (token, data) => {
+  try {
+    const response = await fetch("http://localhost:3030/api/v1/messages", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + token,
+      },
+    });
+    await status(response);
+    return true;
+  } catch (err) {
+    console.log("Could not send a message", err);
+    return false;
+  }
+};
+
+/**
+ * Gets user requests
+ * @param {Number} requestID ID of the request
+ * @param {String} token Authentication token
+ * @returns {Array} message objects
+ */
+export const getRequestMessages = async (requestID, token) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3030/api/v1/messages/${requestID}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Basic " + token,
+        },
+      }
+    );
+    const respStatus = await status(response);
+    const respJson = await json(respStatus);
+    return respJson;
+  } catch (err) {
+    console.log("Could not get request messages", err);
+    return false;
+  }
+};

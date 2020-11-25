@@ -1,0 +1,12 @@
+.BookPreview {
+  display: block;
+}
+
+.Meta {
+  margin-bottom: 8px;
+}
+
+
+.BookPreview :global(.ant-card-body) {
+  padding: 16px;
+}

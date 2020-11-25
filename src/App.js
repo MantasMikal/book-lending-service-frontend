@@ -7,19 +7,20 @@ import {
 } from "react-router-dom";
 import './assets/scss/base.scss';
 
-import Header from './components/Header'
+import Header from './components/Common/Header'
 import Account from './components/account';
-import Home from './components/HomeLayout';
-
+import Home from './components/Layout/HomeLayout';
 import UserContext from './contexts/user';
-import BookLayout from './components/BookLayout';
-import UserBooksLayout from './components/UserBooksLayout';
-import EditBookLayout from './components/EditBookLayout';
-import LoginForm from './components/LoginForm';
-import RegistrationForm from './components/RegistrationForm';
-import UserLayout from './components/Layout/UserLayout';
+import BookLayout from './components/Layout/BookLayout';
+import UserBooksLayout from './components/Layout/UserBooksLayout';
+import EditBookLayout from './components/Layout/EditBookLayout';
+import RequestsLayout from './components/Layout/RequestsLayout';
+import RequestLayout from './components/Layout/RequestLayout';
+import UserLayout from './components/Layout/UserLayout'
+import LoginLayout from './components/Layout/LoginLayout';
+import RegistrationLayout from './components/Layout/RegistrationLayout';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 class App extends React.Component {
 
@@ -56,8 +57,6 @@ class App extends React.Component {
 
     console.log('USER: ', this.state.user)
 
-
-
     return (
       <UserContext.Provider value={context}>
         <Router>
@@ -65,19 +64,18 @@ class App extends React.Component {
           <Content>
             <Switch>
               <Route path="/account" children={<Account />} />
-              <Route path="/register" children={<RegistrationForm />} />
-              <Route path="/login" children={<LoginForm />} />
-              <Route path="/book/:bookId" children={<BookLayout />} />
-              <Route path="/my-books/edit/:bookId" children={<EditBookLayout editView/>}/>
+              <Route path="/register" children={<RegistrationLayout />} />
+              <Route path="/login" children={<LoginLayout />} />
+              <Route path="/book/:bookID" children={<BookLayout />} />
+              <Route path="/my-books/edit/:bookID" children={<EditBookLayout editView/>}/>
               <Route path="/my-books" children={<UserBooksLayout />} />
               <Route path="/add-book" children={<EditBookLayout />} />
+              <Route path="/book-requests/:requestID" children={<RequestLayout />} />
+              <Route path="/book-requests" children={<RequestsLayout />} />
               <Route path="/user/:userID" children={<UserLayout />} />
               <Route path="/" children={<Home />} exact />
             </Switch>
           </Content>
-
-          <Footer style={{ textAlign: 'center' }}>Created for 304CEM</Footer>
-
         </Router>
       </UserContext.Provider>  
     );
