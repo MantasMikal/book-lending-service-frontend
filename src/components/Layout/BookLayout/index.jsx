@@ -19,7 +19,7 @@ const { Title, Paragraph } = Typography;
 const BookLayout = () => {
   const [book, setBook] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [bookOwner, setBookOwner] = useState({});
+  const [bookOwner, setBookOwner] = useState(null);
   const { bookID } = useParams();
   const { user } = useContext(UserContext);
 
@@ -46,7 +46,9 @@ const BookLayout = () => {
     const book = await fetchBookById(bookID);
     !book && message.error("Error fetching books");
     const { ownerID } = book;
-    await fetchBookOwner(ownerID, user.token);
+    if(user.loggedIn) {
+      await fetchBookOwner(ownerID, user.token);
+    }
     setBook(book);
     setIsLoading(false);
   };

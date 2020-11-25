@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
 import {
   getRequestMessages,
   getRequestById,
   sendMessage,
   fetchUserById,
+  archiveRequest,
 } from "../../../utilities/fetch-helpers";
 
 import Title from "antd/lib/typography/Title";
@@ -18,21 +19,38 @@ import Spinner from "../../Primitive/Spinner";
 
 import styles from "./RequestLayout.module.scss";
 import StatusBadge from "../../Primitive/Badge";
+import UpdateBookStatusModal from "../../Common/UpdateBookStatusModal";
 
 const RequestLayout = () => {
   const { user } = useContext(UserContext);
+  const history = useHistory();
   const { ID, token } = user;
   const { requestID } = useParams();
   const [messages, setMessages] = useState([]);
   const [request, setRequest] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [otherParticipant, setOtherParticipant] = useState({});
-  const { title, dateCreated, bookID, status } = request;
+  const {
+    title,
+    dateCreated,
+    bookID,
+    status,
+    bookStatus,
+    isArchivedByRequester,
+    isArchivedByReceiver,
+  } = request;
 
   const isBookOwner = request.bookOwnerID === ID;
   const isBookRequester = request.requesterID === ID;
-  const canArchive = status === 'Completed'
-  const canCancel = status === 'Open' && isBookRequester
+  const canEdit = isBookOwner && status !== "Completed";
+  const canArchive =
+    status === "Completed" &&
+    !(
+      (isBookOwner && isArchivedByReceiver) ||
+      (isBookRequester && isArchivedByRequester)
+    );
+
+  const canCancel = status === "Open" && isBookRequester;
 
   const formattedDate = moment
     .utc(dateCreated)
@@ -41,19 +59,6 @@ const RequestLayout = () => {
     .toString();
 
   useEffect(() => {
-    const fetchRequest = async (requestID, token) => {
-      setIsLoading(true);
-      const request = await getRequestById(requestID, token);
-      !request && message.error("Error fetching request");
-      if (request[0]) {
-        const { bookOwnerID, requesterID } = request[0];
-        const otherParticipantID =
-          requesterID === ID ? bookOwnerID : requesterID;
-        await fetchOtherParticipant(token, otherParticipantID);
-        setRequest(request[0]);
-        setIsLoading(false);
-      }
-    };
     fetchRequest(requestID, token);
     fetchMessages(requestID, token);
   }, [requestID, token, ID]);
@@ -65,6 +70,19 @@ const RequestLayout = () => {
     }, 3000);
     return () => clearInterval(timer);
   });
+
+  const fetchRequest = async (requestID, token) => {
+    setIsLoading(true);
+    const request = await getRequestById(requestID, token);
+    !request && message.error("Error fetching request");
+    if (request) {
+      const { bookOwnerID, requesterID } = request;
+      const otherParticipantID = requesterID === ID ? bookOwnerID : requesterID;
+      await fetchOtherParticipant(token, otherParticipantID);
+      setRequest(request);
+      setIsLoading(false);
+    }
+  };
 
   const fetchMessages = async (requestID, token) => {
     const messages = await getRequestMessages(requestID, token);
@@ -93,6 +111,15 @@ const RequestLayout = () => {
     }
   };
 
+  const handleArchiving = async (requestID, token) => {
+    if (await archiveRequest(requestID, token)) {
+      message.success("Request has been archived");
+      history.push("/book-requests");
+    } else {
+      message.error("Could not archive the request");
+    }
+  };
+
   if (isLoading)
     return (
       <Container gutter fullHeight className={styles.RequestLayout}>
@@ -106,18 +133,25 @@ const RequestLayout = () => {
         <div className={styles.Title}>
           <Title level={2}>{title}</Title>
           <div className={styles.Actions}>
-            {isBookOwner && (
-              <Button>
-                <a href={`/book/${bookID}`}>Go to book</a>
+            <Button>
+              <a href={`/book/${bookID}`}>Go to book</a>
+            </Button>
+            {canCancel && <Button danger>Cancel</Button>}
+            {canArchive && (
+              <Button onClick={() => handleArchiving(requestID, token)} danger>
+                Archive
               </Button>
             )}
-            {canCancel && <Button danger>Cancel</Button>}
-            {canArchive && <Button danger>Archive</Button>}
+            {canEdit && (
+              <UpdateBookStatusModal
+                bookID={bookID}
+                initialStatus={bookStatus}
+                ownerID={request.bookOwnerID}
+                onSubmit={() => fetchRequest(requestID, token)}
+              />
+            )}
           </div>
         </div>
-        <Text className={styles.ViewBookLink}>
-          <a href={`/book/${bookID}`}>View book</a>
-        </Text>
         <div className={styles.StatusBadge}>
           <StatusBadge status={status} />
         </div>

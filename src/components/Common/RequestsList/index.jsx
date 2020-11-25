@@ -8,6 +8,7 @@ import { Button, List } from "antd";
 import Text from "antd/lib/typography/Text";
 
 import styles from "./RequestsList.module.scss";
+import StatusBadge from "../../Primitive/Badge";
 
 const RequestsList = ({ requests, isLoading, onCancel, onArchive }) => (
   <List
@@ -15,7 +16,7 @@ const RequestsList = ({ requests, isLoading, onCancel, onArchive }) => (
     itemLayout="horizontal"
     dataSource={requests}
     renderItem={(request) => {
-      const { dateCreated, title, ID } = request;
+      const { dateCreated, title, status, ID } = request;
       const formattedDate = moment
         .utc(dateCreated)
         .local()
@@ -41,6 +42,7 @@ const RequestsList = ({ requests, isLoading, onCancel, onArchive }) => (
               </a>
             }
           />
+          <StatusBadge status={status} />
         </List.Item>
       );
     }}
