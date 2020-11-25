@@ -147,7 +147,7 @@ export const addBook = async (data, token) => {
  */
 export const authenticate = async (token) => {
   try {
-    const response = await fetch("http://localhost:3030/api/v1/users/login", {
+    const response = await fetch(`${API_URL}/users/login`, {
       method: "POST",
       headers: {
         Authorization: "Basic " + token,
@@ -169,7 +169,7 @@ export const authenticate = async (token) => {
  */
 export const registerUser = async (data) => {
   try {
-    const response = await fetch("http://localhost:3030/api/v1/users", {
+    const response = await fetch(`${API_URL}/users`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -192,7 +192,7 @@ export const registerUser = async (data) => {
 export const searchBooks = async (query) => {
   try {
     const response = await fetch(
-      `http://localhost:3030/api/v1/search/books?${query}`,
+      `${API_URL}/search/books?${query}`,
       {
         method: "GET",
       }
@@ -215,7 +215,7 @@ export const searchBooks = async (query) => {
 export const getUserRequests = async (id, token) => {
   try {
     const response = await fetch(
-      `http://localhost:3030/api/v1/requests/user/${id}`,
+      `${API_URL}/requests/user/${id}`,
       {
         method: "GET",
         headers: {
@@ -241,7 +241,7 @@ export const getUserRequests = async (id, token) => {
 export const getRequestById = async (requestId, token) => {
   try {
     const response = await fetch(
-      `http://localhost:3030/api/v1/requests/${requestId}`,
+      `${API_URL}/requests/${requestId}`,
       {
         method: "GET",
         headers: {
@@ -299,7 +299,7 @@ export const updateBookStatus = async (bookID, data, token) => {
       body: JSON.stringify(data),
     });
     await status(response);
-    return true
+    return true;
   } catch (err) {
     console.log("Error updating book", err);
     return false;
@@ -335,7 +335,7 @@ export const deleteBookRequest = async (requestID, token) => {
  */
 export const sendMessage = async (token, data) => {
   try {
-    const response = await fetch("http://localhost:3030/api/v1/messages", {
+    const response = await fetch(`${API_URL}/messages`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -360,7 +360,7 @@ export const sendMessage = async (token, data) => {
 export const getRequestMessages = async (requestID, token) => {
   try {
     const response = await fetch(
-      `http://localhost:3030/api/v1/messages/${requestID}`,
+      `${API_URL}/messages/${requestID}`,
       {
         method: "GET",
         headers: {
@@ -373,6 +373,27 @@ export const getRequestMessages = async (requestID, token) => {
     return respJson;
   } catch (err) {
     console.log("Could not get request messages", err);
+    return false;
+  }
+};
+
+/**
+ * Archive request
+ * @param {String} token authorization token
+ * @returns {Boolean} true/false if success
+ */
+export const archiveRequest = async (requestID, token) => {
+  try {
+    const response = await fetch(`${API_URL}/requests/archive/${requestID}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + token,
+      },
+    });
+    await status(response);
+    return true;
+  } catch (err) {
+    console.log("Could not send a message", err);
     return false;
   }
 };

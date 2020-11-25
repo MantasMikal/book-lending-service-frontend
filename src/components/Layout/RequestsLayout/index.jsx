@@ -15,6 +15,7 @@ const RequestsLayout = () => {
   const [requests, setRequests] = useState({
     userRequests: [],
     incomingRequests: [],
+    archive: []
   });
   const { user } = useContext(UserContext);
   const { ID, token } = user;
@@ -30,11 +31,26 @@ const RequestsLayout = () => {
     if (requests) {
       let userRequests = [];
       let incomingRequests = [];
+      let archive = [];
+
       requests.forEach((request) => {
-        if (request.requesterID === ID) userRequests.push(request);
-        else incomingRequests.push(request);
+        const isRequester = request.requesterID === ID;
+        const isReceiver = request.bookOwnerID === ID;
+
+        if (isRequester) {
+          if (request.isArchivedByRequester === 1) {
+            archive.push(request);
+          } else userRequests.push(request);
+        }
+
+        if (isReceiver) {
+          if (request.isArchivedByReceiver === 1) {
+            archive.push(request);
+          } else incomingRequests.push(request);
+        }
       });
-      setRequests({ userRequests, incomingRequests });
+
+      setRequests({ userRequests, incomingRequests, archive });
     } else {
       message.error("Could not retrieve user requests");
     }
@@ -50,8 +66,8 @@ const RequestsLayout = () => {
   };
 
   const handleArchive = async (requestID) => {
-    console.log('Archive book')
-  }
+    console.log("Archive book");
+  };
 
   return (
     <Container gutter fullHeight className={styles.RequestsLayout}>
@@ -73,13 +89,14 @@ const RequestsLayout = () => {
             requests={requests.userRequests}
           />
         </Tabs.TabPane>
+        <Tabs.TabPane tab="Archive" key="3">
+          <RequestsList isLoading={isLoading} requests={requests.archive} />
+        </Tabs.TabPane>
       </Tabs>
     </Container>
   );
 };
 
 RequestsLayout.propTypes = {};
-
-
 
 export default RequestsLayout;
