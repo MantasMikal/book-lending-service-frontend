@@ -7,6 +7,7 @@ import {
   sendMessage,
   fetchUserById,
   archiveRequest,
+  deleteBookRequest,
 } from "../../../utilities/fetch-helpers";
 
 import Title from "antd/lib/typography/Title";
@@ -120,6 +121,13 @@ const RequestLayout = () => {
     }
   };
 
+  const handleCancel = async (requestID, token) => {
+    if(await deleteBookRequest(requestID, token)) {
+      message.success('Request has been canceled')
+      history.push("/book-requests");
+    } else message.error('Could not cancel request')
+  }
+
   if (isLoading)
     return (
       <Container gutter fullHeight className={styles.RequestLayout}>
@@ -136,7 +144,7 @@ const RequestLayout = () => {
             <Button>
               <a href={`/book/${bookID}`}>Go to book</a>
             </Button>
-            {canCancel && <Button danger>Cancel</Button>}
+            {canCancel && <Button onClick={() => handleCancel(requestID, token)} danger >Cancel</Button>}
             {canArchive && (
               <Button onClick={() => handleArchiving(requestID, token)} danger>
                 Archive

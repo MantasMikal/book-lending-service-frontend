@@ -307,7 +307,7 @@ export const updateBookStatus = async (bookID, data, token) => {
 };
 
 /**
- * Deletes a book request
+ * Deletes/Cancels a book request
  * @param {Number} requestID request ID
  * @param {String} token authorization token
  */
