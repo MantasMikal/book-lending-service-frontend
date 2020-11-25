@@ -9,7 +9,7 @@ import Text from "antd/lib/typography/Text";
 
 import styles from "./RequestsList.module.scss";
 
-const RequestsList = ({ requests, isLoading, onCancel }) => (
+const RequestsList = ({ requests, isLoading, onCancel, onArchive }) => (
   <List
     loading={isLoading}
     itemLayout="horizontal"
@@ -24,10 +24,12 @@ const RequestsList = ({ requests, isLoading, onCancel }) => (
       return (
         <List.Item
           actions={[
-            onCancel && <Button onClick={() => onCancel(ID)}>Cancel</Button>,
+            onCancel && <Button danger onClick={() => onCancel(ID)}>Cancel Request</Button>,
+            onArchive && <Button danger onClick={() => onArchive(ID)}>Archive</Button>
           ]}
         >
           <List.Item.Meta
+            className={styles.Meta}
             avatar={<Avatar icon={<UserOutlined />} />}
             title={<a href={`/book-requests/${ID}`}>{title}</a>}
             description={

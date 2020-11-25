@@ -5,7 +5,10 @@ import { Badge } from 'antd';
 const statusMap = {
   'Available': 'success',
   'Requested': 'warning',
-  'On Loan': 'error'
+  'On Loan': 'error',
+  'Open': 'warning',
+  'Accepted': 'processing',
+  'Completed': 'success'
 }
 
 const StatusBadge = ({status}) => {
@@ -15,7 +18,7 @@ const StatusBadge = ({status}) => {
 }
 
 StatusBadge.propTypes = {
-  status: PropTypes.string.isRequired
+  status: PropTypes.oneOf(Object.keys(statusMap))
 }
 
 export default StatusBadge

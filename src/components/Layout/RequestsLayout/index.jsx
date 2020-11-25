@@ -49,6 +49,10 @@ const RequestsLayout = () => {
     fetchRequests(ID, token);
   };
 
+  const handleArchive = async (requestID) => {
+    console.log('Archive book')
+  }
+
   return (
     <Container gutter fullHeight className={styles.RequestsLayout}>
       <Tabs
@@ -63,11 +67,10 @@ const RequestsLayout = () => {
             requests={requests.incomingRequests}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="My requests" key="2">
+        <Tabs.TabPane tab="Sent requests" key="2">
           <RequestsList
             isLoading={isLoading}
             requests={requests.userRequests}
-            onCancel={handleDelete}
           />
         </Tabs.TabPane>
       </Tabs>

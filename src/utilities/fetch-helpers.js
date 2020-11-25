@@ -283,6 +283,30 @@ export const requestBook = async (data, token) => {
 };
 
 /**
+ * Makes a book request
+ * @param {Number} bookID book ID
+ * @param {String} token authorization token
+ * @param {Object} data request data
+ */
+export const updateBookStatus = async (bookID, data, token) => {
+  try {
+    const response = await fetch(`${API_URL}/books/status/${bookID}`, {
+      method: "POST",
+      headers: {
+        Authorization: "Basic " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    await status(response);
+    return true
+  } catch (err) {
+    console.log("Error updating book", err);
+    return false;
+  }
+};
+
+/**
  * Deletes a book request
  * @param {Number} requestID request ID
  * @param {String} token authorization token

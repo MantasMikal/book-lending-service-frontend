@@ -17,7 +17,8 @@ const Message = ({ userID, message }) => {
     .local()
     .format("MM/DD/YYYY, h:mm a")
     .toString();
-
+  
+  console.log("🚀 ~ file: index.jsx ~ line 36 ~ Message ~ message", message)
   return (
     <div
       className={cn(

@@ -5,3 +5,10 @@
     margin-right: 8px;
   }
 }
+
+@include mq(0, $breakpoint-tablet) {
+  .Meta {
+    min-width: 250px;
+    margin-bottom: 8px;
+  }
+}

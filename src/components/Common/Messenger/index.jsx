@@ -13,7 +13,6 @@ import styles from "./Messenger.module.scss";
 const Messenger = ({ messages, receiver, userID, onSend }) => {
   const [messageInput, setMessageInput] = useState("");
   if (!messages || !receiver) return null;
-  if (messages.length < 1) return <p>No messages.</p>;
 
   const handleMessageInput = (e) => {
     const message = e.target.value;
@@ -21,9 +20,9 @@ const Messenger = ({ messages, receiver, userID, onSend }) => {
   };
 
   const handleSend = () => {
-    onSend(messageInput)
-    setMessageInput('')
-  }
+    onSend(messageInput);
+    setMessageInput("");
+  };
 
   return (
     <div className={styles.Messenger}>
@@ -34,9 +33,13 @@ const Messenger = ({ messages, receiver, userID, onSend }) => {
         </Text>
       </div>
       <div className={styles.Messages}>
-        {messages.map((message, i) => (
-          <Message key={`Message-${i}`} message={message} userID={userID} />
-        ))}
+        {messages && messages.length > 0 ? (
+          messages.map((message, i) => message && (
+            <Message key={`Message-${i}`} message={message} userID={userID} />
+          ))
+        ) : (
+          <p>No messages.</p>
+        )}
         <div className={styles.Anchor} />
       </div>
       <div className={styles.MessageInput}>
@@ -46,10 +49,7 @@ const Messenger = ({ messages, receiver, userID, onSend }) => {
           value={messageInput}
           placeholder="Type your message..."
         />
-        <Button
-          disabled={messageInput.length < 1}
-          onClick={handleSend}
-        >
+        <Button disabled={messageInput.length < 1} onClick={handleSend}>
           Send
         </Button>
       </div>

@@ -26,6 +26,15 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
     if (!response || response.rejected) {
       message.error(`Could not request book. ${response.info || ""}`);
     } else {
+      // Just make a request if not message
+      if(requestMessage.length < 1) {
+        message.success("Book successfully requested");
+        setVisible(false);
+        setLoading(false);
+        onSubmit();
+        return
+      }
+
       const requestID = response.ID;
       const messageToSend = {
         message: requestMessage,
@@ -33,7 +42,6 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
         receiverID: ownerID,
         requestID: requestID,
       };
-
       if (await sendMessage(token, messageToSend)) {
         message.success("Book successfully requested");
       } else {
@@ -42,6 +50,7 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
         );
       }
     }
+  
     setVisible(false);
     setLoading(false);
     onSubmit();
@@ -73,6 +82,11 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
   );
 };
 
-RequestBookModal.propTypes = {};
+RequestBookModal.propTypes = {
+  title: PropTypes.string.isRequired,
+  bookID: PropTypes.number.isRequired,
+  ownerID: PropTypes.number.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default RequestBookModal;

@@ -13,11 +13,11 @@ import Text from "antd/lib/typography/Text";
 import { Button, message } from "antd";
 import UserContext from "../../../contexts/user";
 import Container from "../../Primitive/Container";
-
+import Messenger from "../../Common/Messenger";
 import Spinner from "../../Primitive/Spinner";
 
 import styles from "./RequestLayout.module.scss";
-import Messenger from "../../Common/Messenger";
+import StatusBadge from "../../Primitive/Badge";
 
 const RequestLayout = () => {
   const { user } = useContext(UserContext);
@@ -27,10 +27,13 @@ const RequestLayout = () => {
   const [request, setRequest] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [otherParticipant, setOtherParticipant] = useState({});
+  const { title, dateCreated, bookID, status } = request;
 
   const isBookOwner = request.bookOwnerID === ID;
   const isBookRequester = request.requesterID === ID;
-  const { title, dateCreated, bookID } = request;
+  const canArchive = status === 'Completed'
+  const canCancel = status === 'Open' && isBookRequester
+
   const formattedDate = moment
     .utc(dateCreated)
     .local()
@@ -82,6 +85,7 @@ const RequestLayout = () => {
       receiverID: otherParticipant.ID,
       requestID: parseInt(requestID),
     };
+
     if (await sendMessage(token, data)) {
       fetchMessages(requestID, token);
     } else {
@@ -103,25 +107,28 @@ const RequestLayout = () => {
           <Title level={2}>{title}</Title>
           <div className={styles.Actions}>
             {isBookOwner && (
-              <>
-                <Button>Accept</Button>
-                <Button danger>Decline</Button>
-              </>
+              <Button>
+                <a href={`/book/${bookID}`}>Go to book</a>
+              </Button>
             )}
-            {isBookRequester && <Button danger>Cancel</Button>}
+            {canCancel && <Button danger>Cancel</Button>}
+            {canArchive && <Button danger>Archive</Button>}
           </div>
         </div>
         <Text className={styles.ViewBookLink}>
           <a href={`/book/${bookID}`}>View book</a>
         </Text>
+        <div className={styles.StatusBadge}>
+          <StatusBadge status={status} />
+        </div>
         <Text>{formattedDate}</Text>
       </div>
       <Messenger
-          messages={messages}
-          receiver={otherParticipant}
-          onSend={handleSendMessage}
-          userID={ID}
-        />
+        messages={messages}
+        receiver={otherParticipant}
+        onSend={handleSendMessage}
+        userID={ID}
+      />
     </Container>
   );
 };

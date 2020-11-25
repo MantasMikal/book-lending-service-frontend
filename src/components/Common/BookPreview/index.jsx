@@ -49,7 +49,7 @@ const BookPreview = ({
 };
 
 BookPreview.propTypes = {
-  images: PropTypes.array,
+  images: PropTypes.string,
   title: PropTypes.string.isRequired,
   yearPublished: PropTypes.string.isRequired,
   ID: PropTypes.number.isRequired,

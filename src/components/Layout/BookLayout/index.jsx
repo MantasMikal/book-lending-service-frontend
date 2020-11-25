@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, message, Typography } from "antd";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
 import { fetchBookById, fetchUserById } from "../../../utilities/fetch-helpers";
 
+import { Button, message, Typography } from "antd";
 import Container from "../../Primitive/Container";
 import Badge from "../../Primitive/Badge";
 import Spinner from "../../Primitive/Spinner";
 import BookImages from "../../Common/BookImages";
-
-import styles from "./BookLayout.module.scss";
 import RequestBookModal from "../../Common/RequestBookModal";
 import UserContext from "../../../contexts/user";
+import UpdateBookStatusModal from "../../Common/UpdateBookStatusModal";
+
+import styles from "./BookLayout.module.scss";
 
 const { Title, Paragraph } = Typography;
 
@@ -52,7 +53,7 @@ const BookLayout = () => {
 
   const fetchBookOwner = async (userId, token) => {
     const bookOwner = await fetchUserById(userId, token);
-    if(bookOwner) {
+    if (bookOwner) {
       setBookOwner(bookOwner);
     } else message.error("Error fetching books");
   };
@@ -64,7 +65,7 @@ const BookLayout = () => {
       </Container>
     );
 
-  const canMakeARequest = !requestID && user.ID && user.ID !== ownerID;
+  const canMakeARequest = !requestID && user.ID && user.ID !== ownerID && status !== 'On Loan';
   const canEdit = user.ID && user.ID === ownerID;
   return (
     <Container gutter fullHeight>
@@ -93,12 +94,19 @@ const BookLayout = () => {
                   </div>
                 )}
                 {canEdit && (
-                  <Button
-                    onClick={() => history.push(`/my-books/edit/${ID}`)}
-                    className={styles.EditButton}
-                  >
-                    Edit
-                  </Button>
+                  <>
+                    <Button
+                      onClick={() => history.push(`/my-books/edit/${ID}`)}
+                      className={styles.EditButton}
+                    >
+                      Edit
+                    </Button>
+                    <UpdateBookStatusModal
+                      bookID={ID}
+                      initialStatus={status}
+                      onSubmit={() => fetchData(bookID)}
+                    />
+                  </>
                 )}
               </div>
             </div>
