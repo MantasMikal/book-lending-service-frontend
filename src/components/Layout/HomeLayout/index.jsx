@@ -26,14 +26,14 @@ const HomeLayout = () => {
       if (!searchTerm) {
         const books = await fetchAllBooks();
         !books && message.error("Error fetching books");
-        setBooks(books);
+        books && setBooks(books.books);
       } else {
         const query = qs.stringify({
           q: searchTerm,
         });
         const books = await searchBooks(query);
         !books && message.error("Error fetching books");
-        setBooks(books);
+        books && setBooks(books.books);
       }
       setIsLoading(false);
     };
@@ -46,11 +46,7 @@ const HomeLayout = () => {
   }, 150);
 
   return (
-    <Container
-      gutter
-      fullHeight
-      className={styles.HomeLayout}
-    >
+    <Container gutter fullHeight className={styles.HomeLayout}>
       <div className={styles.SearchWrapper}>
         <Title level={2}>
           {searchTerm ? `Searching for "${searchTerm}"` : "All books available"}

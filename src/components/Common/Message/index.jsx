@@ -10,7 +10,6 @@ import styles from "./Message.module.scss";
 
 const Message = ({ userID, message }) => {
   const { dateCreated, senderID } = message;
-  console.log("🚀 ~ file: index.jsx ~ line 13 ~ Message ~ dateCreated", dateCreated)
   const messageBody = message.message;
   const formattedDate = moment
     .utc(dateCreated)
@@ -18,7 +17,6 @@ const Message = ({ userID, message }) => {
     .format("MM/DD/YYYY, h:mm a")
     .toString();
   
-  console.log("🚀 ~ file: index.jsx ~ line 36 ~ Message ~ message", message)
   return (
     <div
       className={cn(
@@ -36,7 +34,7 @@ const Message = ({ userID, message }) => {
 };
 
 Message.propTypes = {
-  senderID: PropTypes.number.isRequired,
+  userID: PropTypes.number.isRequired,
   message: PropTypes.shape({
     message: PropTypes.string.isRequired,
     senderID: PropTypes.number.isRequired,

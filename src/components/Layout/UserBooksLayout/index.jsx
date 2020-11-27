@@ -35,7 +35,7 @@ const UserBooksLayout = () => {
       if (!searchTerm) {
         const books = await fetchBooksByUserId(ID);
         !books && message.error("Error fetching books");
-        setBooks(books);
+        books && setBooks(books.books);
       } else {
         const query = qs.stringify({
           q: searchTerm,
@@ -43,7 +43,7 @@ const UserBooksLayout = () => {
         });
         const books = await searchBooks(query);
         !books && message.error("Error fetching books");
-        setBooks(books);
+        books && setBooks(books.books);
       }
       setIsLoading(false);
     };
