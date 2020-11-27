@@ -62,6 +62,7 @@ const RequestLayout = () => {
   useEffect(() => {
     fetchRequest(requestID, token);
     fetchMessages(requestID, token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestID, token, ID]);
 
   // Fetch messages every 3s
@@ -88,7 +89,7 @@ const RequestLayout = () => {
   const fetchMessages = async (requestID, token) => {
     const messages = await getRequestMessages(requestID, token);
     !messages && message.error("Error fetching messages");
-    setMessages(messages);
+    setMessages(messages.messages);
   };
 
   const fetchOtherParticipant = async (token, userID) => {

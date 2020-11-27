@@ -3,10 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./RequestsLayout.module.scss";
 import Container from "../../Primitive/Container";
 import { message, Tabs } from "antd";
-import {
-  deleteBookRequest,
-  getUserRequests,
-} from "../../../utilities/fetch-helpers";
+import { getUserRequests } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
 import RequestsList from "../../Common/RequestsList";
 
@@ -15,7 +12,7 @@ const RequestsLayout = () => {
   const [requests, setRequests] = useState({
     userRequests: [],
     incomingRequests: [],
-    archive: []
+    archive: [],
   });
   const { user } = useContext(UserContext);
   const { ID, token } = user;
@@ -28,12 +25,13 @@ const RequestsLayout = () => {
 
   const fetchRequests = async (ID, token) => {
     const requests = await getUserRequests(ID, token);
-    if (requests) {
+    const allRequests = requests.requests;
+    if (allRequests) {
       let userRequests = [];
       let incomingRequests = [];
       let archive = [];
 
-      requests.forEach((request) => {
+      allRequests.forEach((request) => {
         const isRequester = request.requesterID === ID;
         const isReceiver = request.bookOwnerID === ID;
 
@@ -54,19 +52,6 @@ const RequestsLayout = () => {
     } else {
       message.error("Could not retrieve user requests");
     }
-  };
-
-  const handleDelete = async (requestID) => {
-    if (await deleteBookRequest(requestID)) {
-      message.success("Request deleted");
-    } else {
-      message.error("Could not delete request");
-    }
-    fetchRequests(ID, token);
-  };
-
-  const handleArchive = async (requestID) => {
-    console.log("Archive book");
   };
 
   return (
