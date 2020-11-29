@@ -1,6 +1,5 @@
 import React from "react";
-import { screen, fireEvent } from "@testing-library/react";
-import { renderWithRouterMatch } from "../../../utilities/renderWithRouterMatch";
+import { screen, fireEvent, render } from "@testing-library/react";
 import UserBooksLayout from ".";
 import UserContext from "../../../contexts/user";
 import { fetchBooksByUserId, searchBooks } from "../../../utilities/fetch-helpers";
@@ -20,7 +19,7 @@ describe("Correctly renders UserBooksLayout", () => {
 
   test("Correctly renders UserBooksLayout", async () => {
     fetchBooksByUserId.mockResolvedValueOnce({books: books});
-    renderWithRouterMatch(
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -30,11 +29,7 @@ describe("Correctly renders UserBooksLayout", () => {
         }}
       >
         <UserBooksLayout />
-      </UserContext.Provider>,
-      {
-        route: "/my-books",
-        path: "/my-books",
-      }
+      </UserContext.Provider>
     );
 
     expect(await screen.findByText("My Books")).toBeInTheDocument();
@@ -59,7 +54,7 @@ describe("Search", () => {
 
   test("Searches for user books", async () => {
     searchBooks.mockResolvedValueOnce({books: books});
-    renderWithRouterMatch(
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -69,11 +64,7 @@ describe("Search", () => {
         }}
       >
         <UserBooksLayout />
-      </UserContext.Provider>,
-      {
-        route: "/my-books",
-        path: "/my-books",
-      }
+      </UserContext.Provider>
     );
 
     // Input into search

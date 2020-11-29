@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-
-import styles from "./RequestsLayout.module.scss";
-import Container from "../../Primitive/Container";
 import { message, Tabs } from "antd";
 import { getUserRequests } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
 import RequestsList from "../../Common/RequestsList";
+import Container from "../../Primitive/Container";
+
+import styles from "./RequestsLayout.module.scss";
 
 const RequestsLayout = () => {
   const [isLoading, setIsLoading] = useState(false);

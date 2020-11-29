@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
-import { fetchBookById, fetchUserById } from "../../../utilities/fetch-helpers";
+import { fetchBookById } from "../../../utilities/fetch-helpers";
 
 import { Button, message, Typography } from "antd";
 import Container from "../../Primitive/Container";
@@ -21,7 +21,6 @@ const BookLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { bookID } = useParams();
   const { user } = useContext(UserContext);
-  const history = useHistory();
 
   const {
     ID,

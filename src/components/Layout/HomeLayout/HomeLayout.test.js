@@ -1,6 +1,5 @@
 import React from "react";
-import { screen, fireEvent } from "@testing-library/react";
-import { renderWithRouterMatch } from "../../../utilities/renderWithRouterMatch";
+import { screen, fireEvent, render } from "@testing-library/react";
 import BookLayout from ".";
 import UserContext from "../../../contexts/user";
 import { fetchAllBooks, searchBooks } from "../../../utilities/fetch-helpers";
@@ -9,7 +8,7 @@ import books from "../../../fixtures/book";
 jest.mock("../../../utilities/fetch-helpers", () => {
   return {
     fetchAllBooks: jest.fn(),
-    searchBooks: jest.fn()
+    searchBooks: jest.fn(),
   };
 });
 
@@ -19,8 +18,8 @@ describe("Correctly renders HomeLayout", () => {
   });
 
   test("Correctly renders HomeLayout if not logged", async () => {
-    fetchAllBooks.mockResolvedValueOnce({books: books});
-    renderWithRouterMatch(
+    fetchAllBooks.mockResolvedValueOnce({ books: books });
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -29,27 +28,23 @@ describe("Correctly renders HomeLayout", () => {
         }}
       >
         <BookLayout />
-      </UserContext.Provider>,
-      {
-        route: "/",
-        path: "/",
-      }
+      </UserContext.Provider>
     );
 
     expect(await screen.findByText("All books available")).toBeInTheDocument();
 
     // Renders Search
-    const searchInput = await screen.findByPlaceholderText("Filter books by Title, author or isbn")  
-    expect(searchInput).toBeTruthy()
-
+    const searchInput = await screen.findByPlaceholderText(
+      "Filter books by Title, author or isbn"
+    );
+    expect(searchInput).toBeTruthy();
 
     // Renders books
     expect(await screen.findByText(books[0].title)).toBeInTheDocument();
     expect(await screen.findByText(books[1].title)).toBeInTheDocument();
-    expect(await fetchAllBooks).toHaveBeenCalled()
+    expect(await fetchAllBooks).toHaveBeenCalled();
   });
 });
-
 
 describe("Search", () => {
   afterEach(() => {
@@ -57,8 +52,8 @@ describe("Search", () => {
   });
 
   test("Searches for books", async () => {
-    searchBooks.mockResolvedValueOnce({books: books});
-    renderWithRouterMatch(
+    searchBooks.mockResolvedValueOnce({ books: books });
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -67,27 +62,25 @@ describe("Search", () => {
         }}
       >
         <BookLayout />
-      </UserContext.Provider>,
-      {
-        route: "/",
-        path: "/",
-      }
+      </UserContext.Provider>
     );
 
     // Input into search
-    const searchInput = await screen.findByPlaceholderText("Filter books by Title, author or isbn")  
+    const searchInput = await screen.findByPlaceholderText(
+      "Filter books by Title, author or isbn"
+    );
     fireEvent.change(searchInput, {
       target: {
-        value: 'book'
-      }
-    })
+        value: "book",
+      },
+    });
 
-    expect(await searchInput.value).toEqual('book')
+    expect(await searchInput.value).toEqual("book");
     expect(await screen.findByText(`Searching for "book"`)).toBeInTheDocument();
 
     // Renders found books
     expect(await screen.findByText(books[0].title)).toBeInTheDocument();
     expect(await screen.findByText(books[1].title)).toBeInTheDocument();
-    expect(await searchBooks).toHaveBeenCalled()
+    expect(await searchBooks).toHaveBeenCalled();
   });
 });

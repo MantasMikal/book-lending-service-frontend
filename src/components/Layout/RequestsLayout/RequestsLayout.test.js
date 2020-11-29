@@ -1,11 +1,8 @@
 import React from "react";
-import { screen, waitFor } from "@testing-library/react";
-import { renderWithRouterMatch } from "../../../utilities/renderWithRouterMatch";
+import { screen, waitFor, render } from "@testing-library/react";
 import RequestsLayout from ".";
 import UserContext from "../../../contexts/user";
-import {
-  getUserRequests
-} from "../../../utilities/fetch-helpers";
+import { getUserRequests } from "../../../utilities/fetch-helpers";
 import requests from "../../../fixtures/request";
 
 jest.mock("../../../utilities/fetch-helpers", () => {
@@ -21,10 +18,10 @@ describe("Correctly renders RequestsLayout", () => {
 
   test("Correctly renders RequestsLayout", async () => {
     getUserRequests.mockResolvedValueOnce({
-      requests: requests
+      requests: requests,
     });
 
-    renderWithRouterMatch(
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -34,11 +31,7 @@ describe("Correctly renders RequestsLayout", () => {
         }}
       >
         <RequestsLayout />
-      </UserContext.Provider>,
-      {
-        route: "/book-requests/",
-        path: "/book-requests/",
-      }
+      </UserContext.Provider>
     );
 
     expect(await screen.findByText("Incoming requests")).toBeInTheDocument();
@@ -49,7 +42,7 @@ describe("Correctly renders RequestsLayout", () => {
   test("Provides feedback when failed to fetch requests", async () => {
     getUserRequests.mockResolvedValueOnce(null);
 
-    renderWithRouterMatch(
+    render(
       <UserContext.Provider
         value={{
           user: {
@@ -59,12 +52,12 @@ describe("Correctly renders RequestsLayout", () => {
         }}
       >
         <RequestsLayout />
-      </UserContext.Provider>,
-      {
-        route: "/book-requests/",
-        path: "/book-requests/",
-      }
+      </UserContext.Provider>
     );
-    await waitFor(async () => expect(await screen.findByText("Could not retrieve user requests")).toBeInTheDocument())
+    await waitFor(async () =>
+      expect(
+        await screen.findByText("Could not retrieve user requests")
+      ).toBeInTheDocument()
+    );
   });
 });
