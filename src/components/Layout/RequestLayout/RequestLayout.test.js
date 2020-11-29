@@ -4,8 +4,8 @@ import { renderWithRouterMatch } from "../../../utilities/renderWithRouterMatch"
 import RequestLayout from ".";
 import UserContext from "../../../contexts/user";
 import {
-  getRequestMessages,
-  getRequestById,
+  fetchRequestMessages,
+  fetchRequestById,
   sendMessage,
   fetchUserById,
   archiveRequest,
@@ -15,8 +15,8 @@ import messages from "../../../fixtures/message";
 
 jest.mock("../../../utilities/fetch-helpers", () => {
   return {
-    getRequestMessages: jest.fn(),
-    getRequestById: jest.fn(),
+    fetchRequestMessages: jest.fn(),
+    fetchRequestById: jest.fn(),
     sendMessage: jest.fn(),
     fetchUserById: jest.fn(),
     archiveRequest: jest.fn(),
@@ -31,8 +31,8 @@ describe("Correctly renders RequestLayout", () => {
   });
 
   test("Correctly renders RequestLayout", async () => {
-    getRequestById.mockResolvedValueOnce(request);
-    getRequestMessages.mockResolvedValueOnce({
+    fetchRequestById.mockResolvedValueOnce(request);
+    fetchRequestMessages.mockResolvedValueOnce({
       messages: messages,
     });
 
@@ -59,8 +59,8 @@ describe("Correctly renders RequestLayout", () => {
   });
 
   test("Renders cancel button if book is requested and request status is 'Open'", async () => {
-    getRequestById.mockResolvedValueOnce(request);
-    getRequestMessages.mockResolvedValueOnce({
+    fetchRequestById.mockResolvedValueOnce(request);
+    fetchRequestMessages.mockResolvedValueOnce({
       messages: messages,
     });
 
@@ -85,8 +85,8 @@ describe("Correctly renders RequestLayout", () => {
   });
 
   test("Renders archive button if book is not on request, request status is 'Completed' and it is not been archived", async () => {
-    getRequestById.mockResolvedValueOnce(requests[1]);
-    getRequestMessages.mockResolvedValueOnce({
+    fetchRequestById.mockResolvedValueOnce(requests[1]);
+    fetchRequestMessages.mockResolvedValueOnce({
       messages: messages,
     });
 
@@ -111,8 +111,8 @@ describe("Correctly renders RequestLayout", () => {
   });
 
   test("Renders 'Update status' button if the user is book owner", async () => {
-    getRequestById.mockResolvedValueOnce(request);
-    getRequestMessages.mockResolvedValueOnce({
+    fetchRequestById.mockResolvedValueOnce(request);
+    fetchRequestMessages.mockResolvedValueOnce({
       messages: messages,
     });
 
@@ -144,8 +144,8 @@ describe("Correctly carries out user actions", () => {
   });
 
   test("Fetches messages every 3s", async () => {
-    getRequestById.mockResolvedValue(request);
-    getRequestMessages.mockResolvedValue({
+    fetchRequestById.mockResolvedValue(request);
+    fetchRequestMessages.mockResolvedValue({
       messages: messages,
     });
 
@@ -166,13 +166,13 @@ describe("Correctly carries out user actions", () => {
       }
     );
 
-    await waitFor(() => expect(getRequestMessages).toHaveBeenCalledTimes(2), {
+    await waitFor(() => expect(fetchRequestMessages).toHaveBeenCalledTimes(2), {
       timeout: 4000,
     });
   });
 
   test("Archives request", async () => {
-    getRequestById.mockResolvedValueOnce(requests[1]);
+    fetchRequestById.mockResolvedValueOnce(requests[1]);
     archiveRequest.mockResolvedValue(true)
 
     renderWithRouterMatch(
@@ -199,7 +199,7 @@ describe("Correctly carries out user actions", () => {
   });
 
   test("Provides error message when could archive the request", async () => {
-    getRequestById.mockResolvedValueOnce(requests[1]);
+    fetchRequestById.mockResolvedValueOnce(requests[1]);
     archiveRequest.mockResolvedValue(false)
 
     renderWithRouterMatch(
@@ -227,8 +227,8 @@ describe("Correctly carries out user actions", () => {
   });
 
   test("Sends a message", async () => {
-    getRequestById.mockResolvedValue(request);
-    getRequestMessages.mockResolvedValue({
+    fetchRequestById.mockResolvedValue(request);
+    fetchRequestMessages.mockResolvedValue({
       messages: messages,
     });
     sendMessage.mockResolvedValue(true);
@@ -267,12 +267,12 @@ describe("Correctly carries out user actions", () => {
     fireEvent.click(sendButton);
 
     await waitFor(() => expect(sendMessage).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(getRequestMessages).toHaveBeenCalledTimes(2)); // One on initial render and re-render when sent
+    await waitFor(() => expect(fetchRequestMessages).toHaveBeenCalledTimes(2)); // One on initial render and re-render when sent
   });
 
   test("Provides error message when message could not be sent", async () => {
-    getRequestById.mockResolvedValue(request);
-    getRequestMessages.mockResolvedValue({
+    fetchRequestById.mockResolvedValue(request);
+    fetchRequestMessages.mockResolvedValue({
       messages: messages,
     });
     sendMessage.mockResolvedValue(false);

@@ -2,12 +2,12 @@ import React from "react";
 import { screen, waitFor, render } from "@testing-library/react";
 import RequestsLayout from ".";
 import UserContext from "../../../contexts/user";
-import { getUserRequests } from "../../../utilities/fetch-helpers";
+import { fetchUserRequests } from "../../../utilities/fetch-helpers";
 import requests from "../../../fixtures/request";
 
 jest.mock("../../../utilities/fetch-helpers", () => {
   return {
-    getUserRequests: jest.fn(),
+    fetchUserRequests: jest.fn(),
   };
 });
 
@@ -17,7 +17,7 @@ describe("Correctly renders RequestsLayout", () => {
   });
 
   test("Correctly renders RequestsLayout", async () => {
-    getUserRequests.mockResolvedValueOnce({
+    fetchUserRequests.mockResolvedValueOnce({
       requests: requests,
     });
 
@@ -40,7 +40,7 @@ describe("Correctly renders RequestsLayout", () => {
   });
 
   test("Provides feedback when failed to fetch requests", async () => {
-    getUserRequests.mockResolvedValueOnce(null);
+    fetchUserRequests.mockResolvedValueOnce(null);
 
     render(
       <UserContext.Provider

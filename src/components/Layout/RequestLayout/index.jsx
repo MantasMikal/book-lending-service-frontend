@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
 import {
-  getRequestMessages,
-  getRequestById,
+  fetchRequestMessages,
+  fetchRequestById,
   sendMessage,
   fetchUserById,
   archiveRequest,
@@ -75,7 +75,7 @@ const RequestLayout = () => {
 
   const fetchRequest = async (requestID, token) => {
     setIsLoading(true);
-    const request = await getRequestById(requestID, token);
+    const request = await fetchRequestById(requestID, token);
     !request && message.error("Error fetching request");
     if (request) {
       const { bookOwnerID, requesterID } = request;
@@ -87,7 +87,7 @@ const RequestLayout = () => {
   };
 
   const fetchMessages = async (requestID, token) => {
-    const messages = await getRequestMessages(requestID, token);
+    const messages = await fetchRequestMessages(requestID, token);
     if(messages) {
       setMessages(messages.messages);
     } else {

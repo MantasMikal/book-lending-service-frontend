@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { message, Tabs } from "antd";
-import { getUserRequests } from "../../../utilities/fetch-helpers";
+import { fetchUserRequests } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
 import RequestsList from "../../Common/RequestsList";
 import Container from "../../Primitive/Container";
@@ -24,7 +24,7 @@ const RequestsLayout = () => {
   }, [ID, token]);
 
   const fetchRequests = async (ID, token) => {
-    const requests = await getUserRequests(ID, token);
+    const requests = await fetchUserRequests(ID, token);
     const allRequests = requests && requests.requests;
     if (allRequests) {
       let userRequests = [];
