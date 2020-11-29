@@ -22,6 +22,7 @@ const UserLayout = () => {
 
   const fetchAccount = async (userID, token) => {
     const account = await fetchUserById(userID, token);
+    console.log("🚀 ~ file: index.jsx ~ line 25 ~ fetchAccount ~ account", account)
     if (account) {
       setAccount(account);
     } else message.error("Error fetching account");

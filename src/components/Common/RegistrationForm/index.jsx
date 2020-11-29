@@ -110,7 +110,7 @@ const fullNameRules = [
 const cityRules = [
   {
     required: true,
-    message: "Please input your city",
+    message: "Please input your city!",
     whitespace: true,
     type: "string",
   },
@@ -119,7 +119,7 @@ const cityRules = [
 const countryRules = [
   {
     required: true,
-    message: "Please input your country",
+    message: "Please input your country!",
     whitespace: true,
     type: "string",
   },
@@ -128,7 +128,7 @@ const countryRules = [
 const addressRules = [
   {
     required: true,
-    message: "Please input your address",
+    message: "Please input your address!",
     whitespace: true,
     type: "string",
   },
@@ -137,7 +137,7 @@ const addressRules = [
 const postcodeRules = [
   {
     required: true,
-    message: "Please input your postcode",
+    message: "Please input your postcode!",
     whitespace: true,
     type: "string",
   },

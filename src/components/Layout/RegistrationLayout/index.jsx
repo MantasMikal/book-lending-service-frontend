@@ -19,13 +19,13 @@ const RegistrationLayout = () => {
       message.success("Successfully registered. Please log in");
       history.push("/login");
     } else {
-      message.error("Could register");
+      message.error("Could not register");
     }
   };
 
   return (
     <Container size="medium" gutter>
-      <Title level={2}>Register</Title>
+      <Title level={2}>Registration</Title>
       <div className={styles.FormWrapper}>
         <RegistrationForm onSubmit={onSubmit} />
       </div>

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { message } from "antd";
 import { status, json } from "./requestHandlers";
 import config from "../config";

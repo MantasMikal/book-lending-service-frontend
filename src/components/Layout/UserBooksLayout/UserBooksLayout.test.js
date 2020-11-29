@@ -1,7 +1,7 @@
 import React from "react";
 import { screen, fireEvent } from "@testing-library/react";
 import { renderWithRouterMatch } from "../../../utilities/renderWithRouterMatch";
-import BookLayout from ".";
+import UserBooksLayout from ".";
 import UserContext from "../../../contexts/user";
 import { fetchBooksByUserId, searchBooks } from "../../../utilities/fetch-helpers";
 import books from "../../../fixtures/book";
@@ -29,7 +29,7 @@ describe("Correctly renders UserBooksLayout", () => {
           },
         }}
       >
-        <BookLayout />
+        <UserBooksLayout />
       </UserContext.Provider>,
       {
         route: "/my-books",
@@ -68,7 +68,7 @@ describe("Search", () => {
           },
         }}
       >
-        <BookLayout />
+        <UserBooksLayout />
       </UserContext.Provider>,
       {
         route: "/my-books",

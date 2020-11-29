@@ -17,10 +17,10 @@ import UserContext from "../../../contexts/user";
 import Container from "../../Primitive/Container";
 import Messenger from "../../Common/Messenger";
 import Spinner from "../../Primitive/Spinner";
-
-import styles from "./RequestLayout.module.scss";
 import StatusBadge from "../../Primitive/Badge";
 import UpdateBookStatusModal from "../../Common/UpdateBookStatusModal";
+
+import styles from "./RequestLayout.module.scss";
 
 const RequestLayout = () => {
   const { user } = useContext(UserContext);
@@ -88,10 +88,14 @@ const RequestLayout = () => {
 
   const fetchMessages = async (requestID, token) => {
     const messages = await getRequestMessages(requestID, token);
-    !messages && message.error("Error fetching messages");
-    setMessages(messages.messages);
+    if(messages) {
+      setMessages(messages.messages);
+    } else {
+      message.error("Error fetching messages");
+    }
   };
 
+  // Required to get username of the other participant
   const fetchOtherParticipant = async (token, userID) => {
     const user = await fetchUserById(userID, token);
     !user && message.error("Could not fetch user");

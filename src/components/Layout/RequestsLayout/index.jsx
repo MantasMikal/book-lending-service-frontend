@@ -25,7 +25,7 @@ const RequestsLayout = () => {
 
   const fetchRequests = async (ID, token) => {
     const requests = await getUserRequests(ID, token);
-    const allRequests = requests.requests;
+    const allRequests = requests && requests.requests;
     if (allRequests) {
       let userRequests = [];
       let incomingRequests = [];

@@ -203,8 +203,8 @@ describe("Correctly renders EditBookLayout", () => {
         <EditBookLayout editView />
       </UserContext.Provider>,
       {
-        route: "/add-book",
-        path: "/add-book",
+        route: "/my-books/edit/1",
+        path: "/my-books/edit/:bookID",
       }
     );
 
