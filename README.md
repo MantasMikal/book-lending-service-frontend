@@ -1,19 +1,19 @@
-# 304CEM Front End Demonstration Code
+# 304CEM Book Lending service
 
-#### Current Status
+All tasks the from the brief are complete. 
+All the page layouts and functionality has been tested, except some common components.
 
-The repository is currently complete up to beginning the Week 9 worksheet tasks (tag:week9.1). Check out other git tags for known states (see section below).
+Read the documentation on how to use the app (here)[https://github.coventry.ac.uk/304CEM-2021SEPJAN/mikalaum-sem1-frontend/tree/master/docs/Usage.md]
 
-## About
+```bash
 
-This repository contains the growing code-base of our example React-based single page web app.
+# Install
+npm i 
 
-During the semester we will add to and adjust the default boiler-plate React application set up by the command `create-react-app`. How to use this command will be introduced early in the module.
+#Run
+npm start
 
-## Tags / Releases
+#Tests
+npm run test
 
-Important commits will be tagged so that you can check out a tag and begin working from a known starting point (e.g. what is used in one of the demonstration videos).
-
-Generally tags will refer to the week the code applies to and will have a description about its state such as _week 2 code after completion of basic worksheet tasks_.
-
-To see tags in the terminal use `$ git tag -ln1`. In Github the tags appear under the 'release' subtab in the main repository 'code' tab.
+```
