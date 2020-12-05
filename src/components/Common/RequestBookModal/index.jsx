@@ -23,7 +23,7 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
     };
 
     const response = await requestBook(data, token);
-    if (!response || response.rejected) {
+    if (!response || !response.created) {
       message.error(`Could not request book. ${response.info || ""}`);
     } else {
       // Just make a request if not message

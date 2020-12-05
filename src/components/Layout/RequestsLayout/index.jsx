@@ -25,8 +25,15 @@ const RequestsLayout = () => {
 
   const fetchRequests = async (ID, token) => {
     const requests = await fetchUserRequests(ID, token);
-    const allRequests = requests && requests.requests;
-    if (allRequests) {
+    const allRequests =
+      requests && Array.isArray(requests.requests) && requests.requests;
+
+    if (!requests) {
+      message.error("Could not retrieve user requests");
+      return;
+    }
+
+    if (allRequests.length > 0) {
       let userRequests = [];
       let incomingRequests = [];
       let archive = [];
@@ -49,8 +56,6 @@ const RequestsLayout = () => {
       });
 
       setRequests({ userRequests, incomingRequests, archive });
-    } else {
-      message.error("Could not retrieve user requests");
     }
   };
 

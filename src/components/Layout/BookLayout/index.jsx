@@ -39,7 +39,6 @@ const BookLayout = () => {
 
   useEffect(() => {
     fetchData(bookID);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookID]);
 
   const fetchData = async (bookID) => {
