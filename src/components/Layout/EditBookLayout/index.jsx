@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { UploadOutlined } from "@ant-design/icons";
+import UploadOutlined from "@ant-design/icons/UploadOutlined";
 import { useHistory, useParams } from "react-router-dom";
 import { Form, Input, Button, DatePicker, Upload, message } from "antd";
 import Title from "antd/lib/typography/Title";

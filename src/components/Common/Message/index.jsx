@@ -4,7 +4,7 @@ import moment from "moment";
 import cn from "classnames";
 import Avatar from "antd/lib/avatar/avatar";
 import Text from "antd/lib/typography/Text";
-import { UserOutlined } from "@ant-design/icons";
+import UserOutlined from "@ant-design/icons/UserOutlined";
 
 import styles from "./Message.module.scss";
 

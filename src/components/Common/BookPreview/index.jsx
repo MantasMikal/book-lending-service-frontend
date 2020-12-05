@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import EditOutlined from "@ant-design/icons/EditOutlined";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { Card } from "antd";
 import Badge from "../../Primitive/Badge";
 import Thumbnail from "./components/Thumbnail";
