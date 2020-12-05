@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { message } from "antd";
 import { status, json } from "./requestHandlers";
 import config from "../config";
@@ -212,7 +214,7 @@ export const searchBooks = async (query) => {
  * @param {String} token Authentication token
  * @returns {Array} request objects
  */
-export const getUserRequests = async (id, token) => {
+export const fetchUserRequests = async (id, token) => {
   try {
     const response = await fetch(
       `${API_URL}/requests/user/${id}`,
@@ -238,7 +240,7 @@ export const getUserRequests = async (id, token) => {
  * @param {String} token Authentication token
  * @returns {Array} request objects
  */
-export const getRequestById = async (requestId, token) => {
+export const fetchRequestById = async (requestId, token) => {
   try {
     const response = await fetch(
       `${API_URL}/requests/${requestId}`,
@@ -357,7 +359,7 @@ export const sendMessage = async (token, data) => {
  * @param {String} token Authentication token
  * @returns {Array} message objects
  */
-export const getRequestMessages = async (requestID, token) => {
+export const fetchRequestMessages = async (requestID, token) => {
   try {
     const response = await fetch(
       `${API_URL}/messages/${requestID}`,

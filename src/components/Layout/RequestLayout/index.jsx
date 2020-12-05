@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
 import {
-  getRequestMessages,
-  getRequestById,
+  fetchRequestMessages,
+  fetchRequestById,
   sendMessage,
   fetchUserById,
   archiveRequest,
@@ -17,10 +17,10 @@ import UserContext from "../../../contexts/user";
 import Container from "../../Primitive/Container";
 import Messenger from "../../Common/Messenger";
 import Spinner from "../../Primitive/Spinner";
-
-import styles from "./RequestLayout.module.scss";
 import StatusBadge from "../../Primitive/Badge";
 import UpdateBookStatusModal from "../../Common/UpdateBookStatusModal";
+
+import styles from "./RequestLayout.module.scss";
 
 const RequestLayout = () => {
   const { user } = useContext(UserContext);
@@ -75,7 +75,7 @@ const RequestLayout = () => {
 
   const fetchRequest = async (requestID, token) => {
     setIsLoading(true);
-    const request = await getRequestById(requestID, token);
+    const request = await fetchRequestById(requestID, token);
     !request && message.error("Error fetching request");
     if (request) {
       const { bookOwnerID, requesterID } = request;
@@ -87,11 +87,15 @@ const RequestLayout = () => {
   };
 
   const fetchMessages = async (requestID, token) => {
-    const messages = await getRequestMessages(requestID, token);
-    !messages && message.error("Error fetching messages");
-    setMessages(messages.messages);
+    const messages = await fetchRequestMessages(requestID, token);
+    if(messages) {
+      setMessages(messages.messages);
+    } else {
+      message.error("Error fetching messages");
+    }
   };
 
+  // Required to get username of the other participant
   const fetchOtherParticipant = async (token, userID) => {
     const user = await fetchUserById(userID, token);
     !user && message.error("Could not fetch user");

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-
-import styles from "./RequestsLayout.module.scss";
-import Container from "../../Primitive/Container";
 import { message, Tabs } from "antd";
-import { getUserRequests } from "../../../utilities/fetch-helpers";
+import { fetchUserRequests } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
 import RequestsList from "../../Common/RequestsList";
+import Container from "../../Primitive/Container";
+
+import styles from "./RequestsLayout.module.scss";
 
 const RequestsLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,9 +24,16 @@ const RequestsLayout = () => {
   }, [ID, token]);
 
   const fetchRequests = async (ID, token) => {
-    const requests = await getUserRequests(ID, token);
-    const allRequests = requests.requests;
-    if (allRequests) {
+    const requests = await fetchUserRequests(ID, token);
+    const allRequests =
+      requests && Array.isArray(requests.requests) && requests.requests;
+
+    if (!requests) {
+      message.error("Could not retrieve user requests");
+      return;
+    }
+
+    if (allRequests.length > 0) {
       let userRequests = [];
       let incomingRequests = [];
       let archive = [];
@@ -49,8 +56,6 @@ const RequestsLayout = () => {
       });
 
       setRequests({ userRequests, incomingRequests, archive });
-    } else {
-      message.error("Could not retrieve user requests");
     }
   };
 

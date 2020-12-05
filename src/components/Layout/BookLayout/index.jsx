@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { imageUrlBuilderMany } from "../../../utilities/image-builder";
-import { fetchBookById, fetchUserById } from "../../../utilities/fetch-helpers";
+import { fetchBookById } from "../../../utilities/fetch-helpers";
 
 import { Button, message, Typography } from "antd";
 import Container from "../../Primitive/Container";
@@ -19,46 +19,34 @@ const { Title, Paragraph } = Typography;
 const BookLayout = () => {
   const [book, setBook] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [bookOwner, setBookOwner] = useState(null);
   const { bookID } = useParams();
   const { user } = useContext(UserContext);
 
-  const history = useHistory();
   const {
     ID,
     title,
     summary,
+    author,
     yearPublished,
     ISBN,
     images,
     requestID,
     status,
     ownerID,
+    ownerUsername,
   } = book;
   const bookImages = imageUrlBuilderMany(images);
 
   useEffect(() => {
     fetchData(bookID);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookID]);
 
   const fetchData = async (bookID) => {
     setIsLoading(true);
     const book = await fetchBookById(bookID);
     !book && message.error("Error fetching books");
-    const { ownerID } = book;
-    if(user.loggedIn) {
-      await fetchBookOwner(ownerID, user.token);
-    }
     setBook(book);
     setIsLoading(false);
-  };
-
-  const fetchBookOwner = async (userId, token) => {
-    const bookOwner = await fetchUserById(userId, token);
-    if (bookOwner) {
-      setBookOwner(bookOwner);
-    } else message.error("Error fetching books");
   };
 
   if (isLoading)
@@ -68,7 +56,8 @@ const BookLayout = () => {
       </Container>
     );
 
-  const canMakeARequest = !requestID && user.ID && user.ID !== ownerID && status !== 'On Loan';
+  const canMakeARequest =
+    !requestID && user.ID && user.ID !== ownerID && status !== "On Loan";
   const canEdit = user.ID && user.ID === ownerID;
   return (
     <Container gutter fullHeight>
@@ -98,11 +87,8 @@ const BookLayout = () => {
                 )}
                 {canEdit && (
                   <>
-                    <Button
-                      onClick={() => history.push(`/my-books/edit/${ID}`)}
-                      className={styles.EditButton}
-                    >
-                      Edit
+                    <Button className={styles.EditButton}>
+                      <a href={`/my-books/edit/${ID}`}>Edit</a>
                     </Button>
                     <UpdateBookStatusModal
                       bookID={ID}
@@ -113,12 +99,14 @@ const BookLayout = () => {
                 )}
               </div>
             </div>
-            {bookOwner && (
+            {ownerUsername && (
               <Paragraph className={styles.YearPublished}>
-                Book owner:{" "}
-                <a href={`/user/${ownerID}`}>{bookOwner.username}</a>
+                Book owner: <a href={`/user/${ownerID}`}>{ownerUsername}</a>
               </Paragraph>
             )}
+            <Paragraph className={styles.YearPublished}>
+              Book author: {author}
+            </Paragraph>
             <Paragraph className={styles.YearPublished}>
               Year published: {yearPublished}
             </Paragraph>

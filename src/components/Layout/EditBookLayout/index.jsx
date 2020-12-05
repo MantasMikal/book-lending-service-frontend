@@ -14,7 +14,7 @@ import {
   updateBookById,
 } from "../../../utilities/fetch-helpers";
 import validateFile from "../../../utilities/validate-file";
-import {imageUrlBuilder} from "../../../utilities/image-builder";
+import { imageUrlBuilder } from "../../../utilities/image-builder";
 
 import styles from "./EditBookLayout.module.scss";
 
@@ -32,14 +32,7 @@ const EditBookLayout = ({ editView }) => {
       const fetchAndUpdateForm = async () => {
         const book = await fetchBookById(bookID);
         !book && message.error("Could not fetch book data");
-        const {
-          title,
-          author,
-          yearPublished,
-          summary,
-          ISBN,
-          images,
-        } = book;
+        const { title, author, yearPublished, summary, ISBN, images } = book;
 
         const bookData = {
           title: title,
@@ -52,7 +45,7 @@ const EditBookLayout = ({ editView }) => {
         form.setFieldsValue(bookData); // Sets fetched fields to the form
 
         // Combines all images
-        const allImages = images && images.split(";")
+        const allImages = images && images.split(";");
 
         // Create a mock file for each image and add it to the image uploader,
         // so you can send it back if the images haven't changed
@@ -124,6 +117,7 @@ const EditBookLayout = ({ editView }) => {
 
   // Adds new book
   const addBookRequest = async (data, token) => {
+    console.log("-------------------------------- Submit");
     if (await addBook(data, token)) {
       message.success("Book has been addded");
       history.push("/my-books");
@@ -160,7 +154,7 @@ const EditBookLayout = ({ editView }) => {
         labelCol={{ sm: { span: 6 }, lg: { span: 5 } }}
         labelAlign="left"
         encType="multipart/form-data"
-        layout='vertical'
+        layout="vertical"
       >
         <div className={styles.FormInner}>
           <div className={styles.FormWrapper}>
@@ -169,7 +163,7 @@ const EditBookLayout = ({ editView }) => {
               name="title"
               rules={[{ required: true, message: "Please input book title" }]}
             >
-              <Input />
+              <Input placeholder='Your book title' />
             </Form.Item>
             <Form.Item
               label="Author"
@@ -178,7 +172,7 @@ const EditBookLayout = ({ editView }) => {
                 { required: true, message: "Please input the book author!" },
               ]}
             >
-              <Input />
+              <Input data-testid="author-input"/>
             </Form.Item>
             <Form.Item
               name="yearPublished"
