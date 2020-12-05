@@ -20,6 +20,10 @@ import styles from "./UserBooksLayout.module.scss";
 const { Search } = Input;
 const { Title } = Typography;
 
+/**
+ * User books page. Lists all user books and allows searching
+ * Has extra actions for the book cards
+ */
 const UserBooksLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [books, setBooks] = useState([]);

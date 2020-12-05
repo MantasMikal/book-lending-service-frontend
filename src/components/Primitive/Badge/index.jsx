@@ -11,6 +11,9 @@ const statusMap = {
   'Completed': 'success'
 }
 
+/**
+ * Wrapper that maps all request/book states to a color
+ */
 const StatusBadge = ({status}) => {
   return (
     <Badge text={status} status={statusMap[status]} />

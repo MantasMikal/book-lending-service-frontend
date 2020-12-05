@@ -14,6 +14,9 @@ import styles from "./HomeLayout.module.scss";
 const { Search } = Input;
 const { Title } = Typography;
 
+/**
+ * Home Page. Lists all the books
+ */
 const HomeLayout = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +43,8 @@ const HomeLayout = () => {
     fetchBooks();
   }, [searchTerm]);
 
+
+  // Throttle requests
   const handleSearch = debounce((e) => {
     const value = e.target.value;
     setSearchTerm(value);

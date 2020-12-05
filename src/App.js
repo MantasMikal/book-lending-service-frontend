@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Layout, message } from "antd";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./assets/scss/base.scss";
 
 import Header from "./components/Common/Header";
 import Home from "./components/Layout/HomeLayout";
@@ -14,6 +13,8 @@ import RequestLayout from "./components/Layout/RequestLayout";
 import UserLayout from "./components/Layout/UserLayout";
 import LoginLayout from "./components/Layout/LoginLayout";
 import RegistrationLayout from "./components/Layout/RegistrationLayout";
+
+import "./assets/scss/base.scss";
 
 const { Content } = Layout;
 

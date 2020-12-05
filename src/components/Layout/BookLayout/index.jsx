@@ -16,6 +16,9 @@ import styles from "./BookLayout.module.scss";
 
 const { Title, Paragraph } = Typography;
 
+/**
+ * Book details page
+ */
 const BookLayout = () => {
   const [book, setBook] = useState({});
   const [isLoading, setIsLoading] = useState(true);

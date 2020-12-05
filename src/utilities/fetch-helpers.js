@@ -1,10 +1,8 @@
 /* istanbul ignore file */
-
 import { message } from "antd";
 import { status, json } from "./requestHandlers";
-import config from "../config";
 
-const { API_URL } = config;
+const API_URL = process.env.REACT_APP_API_URL
 
 /**
  * Fetch user by ID

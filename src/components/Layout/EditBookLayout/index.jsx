@@ -18,6 +18,9 @@ import { imageUrlBuilder } from "../../../utilities/image-builder";
 
 import styles from "./EditBookLayout.module.scss";
 
+/**
+ * Page for handling adding/updating books
+ */
 const EditBookLayout = ({ editView }) => {
   const [fileList, setFileList] = useState([]);
   const { user } = useContext(UserContext);

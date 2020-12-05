@@ -7,6 +7,9 @@ import Container from "../../Primitive/Container";
 
 import styles from "./RequestsLayout.module.scss";
 
+/**
+ * Requests page. Lists all user requests
+ */
 const RequestsLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [requests, setRequests] = useState({

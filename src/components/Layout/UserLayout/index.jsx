@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchUserById } from "../../../utilities/fetch-helpers";
+
 import { Descriptions, message } from "antd";
 import UserContext from "../../../contexts/user";
 import Title from "antd/lib/typography/Title";
 import Container from "../../Primitive/Container";
 import Spinner from "../../Primitive/Spinner";
 
+/**
+ * User account page. Shows user details
+ */
 const UserLayout = () => {
   const [account, setAccount] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +26,6 @@ const UserLayout = () => {
 
   const fetchAccount = async (userID, token) => {
     const account = await fetchUserById(userID, token);
-    console.log("🚀 ~ file: index.jsx ~ line 25 ~ fetchAccount ~ account", account)
     if (account) {
       setAccount(account);
     } else message.error("Error fetching account");
