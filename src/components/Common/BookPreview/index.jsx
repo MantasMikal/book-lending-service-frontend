@@ -9,6 +9,7 @@ import Thumbnail from "./components/Thumbnail";
 import styles from "./BookPreview.module.scss";
 
 const { Meta } = Card;
+
 /**
  * Renders a book preview card
  */

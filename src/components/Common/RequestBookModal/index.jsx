@@ -7,6 +7,9 @@ import { Button, message } from "antd";
 import { requestBook, sendMessage } from "../../../utilities/fetch-helpers";
 import UserContext from "../../../contexts/user";
 
+/**
+ * A modal for requesting a book.
+ */
 const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
   const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -26,7 +29,7 @@ const RequestBookModal = ({ title, bookID, ownerID, onSubmit }) => {
     if (!response || !response.created) {
       message.error(`Could not request book. ${response.info || ""}`);
     } else {
-      // Just make a request if not message
+      // Just make a request if no message
       if(requestMessage.length < 1) {
         message.success("Book successfully requested");
         setVisible(false);

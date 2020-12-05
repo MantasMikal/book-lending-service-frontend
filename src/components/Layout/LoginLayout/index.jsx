@@ -10,7 +10,9 @@ import Login from "../../Common/LoginForm";
 
 import styles from "./LoginLayout.module.scss";
 
-
+/**
+ * Log in Page
+ */
 const LoginLayout = () => {
   const { login } = useContext(UserContext);
   const history = useHistory();

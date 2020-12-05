@@ -8,6 +8,9 @@ import { UserOutlined } from "@ant-design/icons";
 
 import styles from "./Message.module.scss";
 
+/**
+ * A message. Used in Messenger
+ */
 const Message = ({ userID, message }) => {
   const { dateCreated, senderID } = message;
   const messageBody = message.message;

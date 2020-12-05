@@ -1,11 +1,16 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import styles from "./UpdateBookStatusModal.module.scss";
+import UserContext from "../../../contexts/user";
+
 import Modal from "antd/lib/modal/Modal";
 import { Button, message, Radio } from "antd";
 import { updateBookStatus } from "../../../utilities/fetch-helpers";
-import UserContext from "../../../contexts/user";
 
+import styles from "./UpdateBookStatusModal.module.scss";
+
+/**
+ * A modal for updating book status
+ */
 const UpdateBookStatusModal = ({ initialStatus, bookID, onSubmit }) => {
   const [isVisible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);

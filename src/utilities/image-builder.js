@@ -1,5 +1,6 @@
-import config from "../config";
 import imagePlaceholder from "../assets/images/image_placeholder.jpg";
+
+const API_HOST = process.env.REACT_APP_API_HOST
 
 /**
  * Utility to build image urls
@@ -9,7 +10,6 @@ import imagePlaceholder from "../assets/images/image_placeholder.jpg";
  */
 export const imageUrlBuilder = (imageName) => {
   if (!imageName) return imagePlaceholder;
-  const { API_HOST } = config;
   return `${API_HOST}/uploads/${imageName}`;
 };
 

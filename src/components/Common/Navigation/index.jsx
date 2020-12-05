@@ -14,6 +14,9 @@ import styles from "./Navigation.module.scss";
 
 const { SubMenu } = Menu;
 
+/**
+ * Nav
+ */
 const Navigation = () => {
   const { logout, user } = useContext(UserContext);
   const { loggedIn, username } = user;

@@ -6,10 +6,13 @@ import { UserOutlined } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 import { Button, List } from "antd";
 import Text from "antd/lib/typography/Text";
-
-import styles from "./RequestsList.module.scss";
 import StatusBadge from "../../Primitive/Badge";
 
+import styles from "./RequestsList.module.scss";
+
+/**
+ * Lists user requests 
+ */
 const RequestsList = ({ requests, isLoading, onCancel, onArchive }) => (
   <List
     loading={isLoading}

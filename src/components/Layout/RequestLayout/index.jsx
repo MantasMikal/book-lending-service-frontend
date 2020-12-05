@@ -22,6 +22,9 @@ import UpdateBookStatusModal from "../../Common/UpdateBookStatusModal";
 
 import styles from "./RequestLayout.module.scss";
 
+/**
+ * Requests page. Shows request details and messages
+ */
 const RequestLayout = () => {
   const { user } = useContext(UserContext);
   const history = useHistory();
@@ -44,6 +47,10 @@ const RequestLayout = () => {
   const isBookOwner = request.bookOwnerID === ID;
   const isBookRequester = request.requesterID === ID;
   const canEdit = isBookOwner && status !== "Completed";
+  
+  // Checks if the user can archive a book
+  // Request status must be completed
+  // And the request must not be archived already 
   const canArchive =
     status === "Completed" &&
     !(
@@ -62,6 +69,7 @@ const RequestLayout = () => {
   useEffect(() => {
     fetchRequest(requestID, token);
     fetchMessages(requestID, token);
+    // Safe to disable as we're not using props
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestID, token, ID]);
 
