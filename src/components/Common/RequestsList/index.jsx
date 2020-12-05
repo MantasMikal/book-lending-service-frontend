@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { UserOutlined } from "@ant-design/icons";
+import UserOutlined from "@ant-design/icons/UserOutlined";
 import Avatar from "antd/lib/avatar/avatar";
 import { Button, List } from "antd";
 import Text from "antd/lib/typography/Text";

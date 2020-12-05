@@ -2,13 +2,12 @@ import React, { useContext } from "react";
 import { Avatar, Menu } from "antd";
 import { Link } from "react-router-dom";
 import UserContext from "../../../contexts/user";
-import {
-  BookFilled,
-  HomeFilled,
-  NotificationOutlined,
-  PlusOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+
+import BookFilled from "@ant-design/icons/BookFilled";
+import HomeFilled from "@ant-design/icons/HomeFilled";
+import NotificationOutlined from "@ant-design/icons/NotificationOutlined";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
+import UserOutlined from "@ant-design/icons/UserOutlined";
 
 import styles from "./Navigation.module.scss";
 
